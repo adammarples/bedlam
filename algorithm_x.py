@@ -33,7 +33,7 @@ def solver(grid, row_ids, partial_solution, level_dict, level):
     r = pick_row(grid, c, bump_row)
     print('r =', r)
     if r is None:
-        return 'Fail'
+        return
     print('putting', row_ids[r], 'in partial solution')
     partial_solution.append(row_ids[r])
     rows_to_keep, cols_to_keep = grid_magic(grid, c, r)
@@ -136,7 +136,7 @@ def solve_once(grid):
     solution = solver(grid, row_ids, partial_solution, level_dict, level)
     print ('solution as')
     print (solution)
-    return solution
+    return solution, level_dict
 
 def solution_handler(grid, solution, n_shapes, box_size):
     #print grid.shape
@@ -151,18 +151,4 @@ def solution_handler(grid, solution, n_shapes, box_size):
     return solution_grid
 
 if __name__ == '__main__':
-    #csv_name = 'test1.csv'
-    csv_name = 'wiki_example.csv'
-
-    csv_name = 'soma.csv'
-    csv_name = 'soma2.csv'
-    n_shapes, box_size = 7, 3
-
-    #csv_name = 'bedlam.csv'
-    #n_shapes, box_size = 13, 4
-
-    grid = load(csv_name)
-    print ('Load', csv_name, 'as')
-    print (grid, grid.shape)
-    solution = solve_once(grid)
-    solution_grid = solution_handler(grid, solution, n_shapes, box_size)
+    pass

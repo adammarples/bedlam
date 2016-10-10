@@ -44,11 +44,3 @@ def save(filepath, grid):
 
 if __name__ == '__main__':
     pass
-    #full_grid = build_from_txt('soma.txt', 7, 3)
-    #save('soma.csv', full_grid)
-
-    #full_grid = build_from_txt('soma2.txt', 7, 3)
-    #save('soma2.csv', full_grid)
-
-    #full_grid = build_from_txt('bedlam.txt', 13, 4)
-    #save('bedlam.csv', full_grid)
