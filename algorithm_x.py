@@ -42,6 +42,7 @@ def solver(grid, row_ids, partial_solution, level_dict, level):
     # Recursion
     level += 1
     #print 'rows to keep going in as', rows_to_keep, [row_ids[x] for x in rows_to_keep]partial = solver(new_grid, [row_ids[x] for x in rows_to_keep], partial_solution, level_dict, level)
+    partial = solver(new_grid, [row_ids[x] for x in rows_to_keep], partial_solution, level_dict, level)
     if partial == None:
         print ('Failure!')
         # clear bumps on this level before leaving
