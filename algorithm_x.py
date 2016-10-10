@@ -7,7 +7,7 @@ np.set_printoptions(linewidth=250)
 def load(filepath):
     return np.loadtxt(filepath, delimiter=",")
 
-def solver(grid, row_ids, partial_solution, level_dict, level):
+def solver(grid, col_ids, row_ids, partial_solution, level_dict, level):
     """ incidence matrix solver from d. e. knuth's "algorith x"
 
     From Wikipedia:
@@ -26,22 +26,26 @@ def solver(grid, row_ids, partial_solution, level_dict, level):
 
     bump_row = level_dict[level]
     print('down at level', level, 'with bump', bump_row)
+    print (grid)
     if not grid.size:
+        print( 'return [] successfull')
         return partial_solution
     c = pick_column(grid)
-    print('c =', c)
+    print('c =', c, [col_ids[c]])
     r = pick_row(grid, c, bump_row)
-    print('r =', r)
+    print('r =', r, [row_ids[r]])
     if r is None:
         return
     print('putting', row_ids[r], 'in partial solution')
     partial_solution.append(row_ids[r])
-    rows_to_keep, cols_to_keep = grid_magic(grid, c, r)
-    new_grid = reduce_grid(grid, rows_to_keep, cols_to_keep)
+    rows_to_delete, cols_to_delete, rows_to_keep, cols_to_keep = grid_magic(grid, c, r)
+    new_grid = reduce_grid(grid, rows_to_delete, cols_to_delete, rows_to_keep, cols_to_keep)
 
     # Recursion
     level += 1
-    partial = solver(new_grid, [row_ids[x] for x in rows_to_keep], partial_solution, level_dict, level)
+    new_col_ids = [col_ids[x] for x in cols_to_keep]
+    new_row_ids = [row_ids[x] for x in rows_to_keep]
+    partial = solver(new_grid, new_col_ids, new_row_ids, partial_solution, level_dict, level)
     if partial == None:
         print ('Failure!')
         # clear bumps on this level before leaving
@@ -53,7 +57,7 @@ def solver(grid, row_ids, partial_solution, level_dict, level):
         print ('bump level', level, 'to row', level_dict[level])
         popped = partial_solution.pop()
         print (popped, 'removed from partial solution')
-        return solver(grid, row_ids, partial_solution, level_dict, level)
+        return solver(grid, col_ids, row_ids, partial_solution, level_dict, level)
     else:
         return partial
 
@@ -93,22 +97,25 @@ def grid_magic(grid, c, r):
             cols_to_delete.append(j)
     cols_to_delete = set(cols_to_delete)
     rows_to_delete = set(rows_to_delete)
-    cols_to_keep = [jj for jj in range(n) if jj not in cols_to_delete]
     rows_to_keep = [ii for ii in range(m) if ii not in rows_to_delete]
-    return rows_to_keep, cols_to_keep
+    cols_to_keep = [jj for jj in range(n) if jj not in cols_to_delete]
+    return rows_to_delete, cols_to_delete, rows_to_keep, cols_to_keep
 
-def reduce_grid(grid, rows_to_keep, cols_to_keep):
-    new_grid = np.take(grid, rows_to_keep, axis=0)
-    new_grid = np.take(new_grid, cols_to_keep, axis=1)
+def reduce_grid(grid, rows_to_delete, cols_to_delete, rows_to_keep, cols_to_keep):
+    print ('deleting columns', cols_to_delete)
+    new_grid = np.take(grid, cols_to_keep, axis=1)
+    print ('deleting rows', rows_to_delete)
+    new_grid = np.take(new_grid, rows_to_keep, axis=0)
     return new_grid
 
 def solve_once(grid):
     m, n = grid.shape
+    col_ids = range(n)
     row_ids = range(m)
     partial_solution = []
     level_dict = defaultdict(int)
     level = 0
-    solution = solver(grid, row_ids, partial_solution, level_dict, level)
+    solution = solver(grid, col_ids, row_ids, partial_solution, level_dict, level)
     print ('solution as')
     print (solution)
     solution_grid = np.take(grid, solution, axis=0)
