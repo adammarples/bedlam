@@ -1,0 +1,5 @@
+fix solver finishing early
+add multiple solutions
+add args/packaging details
+add final display
+possibly use numpy recarrays
