@@ -25,7 +25,7 @@ def solve(csv_name):
 if __name__ == '__main__':
     #build_wiki_example()
     #build_soma()
-    solve('wiki_example.csv')
+    #solve('wiki_example.csv')
     solve('soma.csv')
 
     

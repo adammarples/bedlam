@@ -8,58 +8,41 @@ def load(filepath):
     return np.loadtxt(filepath, delimiter=",")
 
 def solver(grid, row_ids, partial_solution, level_dict, level):
+    """ incidence matrix solver from d. e. knuth's "algorith x"
+    
+    From Wikipedia:
+    1. If the matrix A has no columns, the current partial solution
+    is a valid solution; terminate successfully.
+    2. Otherwise choose a column c (deterministically). (We are choosing the column
+    with the least number of 0's (why?)).
+    3. Choose a row r such that A[r][c] == 1 (nondeterministically). (We
+    are simply iterating through the rows in order).
+    4. Include row r in the partial solution.
+    5. for each column j such that A[r][j] == 1:
+          for each row i such that A[i][j] == 1:
+               delete row i from matrix A.
+          delete column j from matrix A.
+    """
+    
     bump_row = level_dict[level]
     print('down at level', level, 'with bump', bump_row)
-    #print grid.shape, grid.size, grid
-    #print 'My row ids are', row_ids
-
-    # From wikipedia: Algorithm X
-    # 1. If the matrix A has no columns, the current partial
-    # solution is a valid solution; terminate successfully.
     if not grid.size:
         return partial_solution
-
-    # 2. Otherwise choose a column c (deterministically).
-    #try:
     c = pick_column(grid)
     print('c =', c)
-    #except:
-    #    return 'Fail'
-
-    # 3. Choose a row r such that A r,c = 1 (nondeterministically).
-    #try:
     r = pick_row(grid, c, bump_row)
     print('r =', r)
-
     if r is None:
         return 'Fail'
-    #except:
-    #    return 'Fail'
-
-    # 4. Include row r in the partial solution.
-    #print 'row_ids', row_ids
     print('putting', row_ids[r], 'in partial solution')
     partial_solution.append(row_ids[r])
-    #print 'partial_solution now', partial_solution
-
-    # 5. for each column j such that Ar, j = 1,
-    #       for each row i such that Ai, j = 1,
-    #           delete row i from matrix A.
-    #       delete column j from matrix A.
-
     rows_to_keep, cols_to_keep = grid_magic(grid, c, r)
-
-    # delete grid
     new_grid = reduce_grid(grid, rows_to_keep, cols_to_keep)
 
-    # pass recursively
-    #print 'partial solution as'
-    #print partial_solution
-
+    # Recursion
     level += 1
-    #print 'rows to keep going in as', rows_to_keep, [row_ids[x] for x in rows_to_keep]
-    partial = solver(new_grid, [row_ids[x] for x in rows_to_keep], partial_solution, level_dict, level)
-    if partial == 'Fail':
+    #print 'rows to keep going in as', rows_to_keep, [row_ids[x] for x in rows_to_keep]partial = solver(new_grid, [row_ids[x] for x in rows_to_keep], partial_solution, level_dict, level)
+    if partial == None:
         print ('Failure!')
         # clear bumps on this level before leaving
         level_dict[level] = 0
@@ -72,9 +55,8 @@ def solver(grid, row_ids, partial_solution, level_dict, level):
         print (popped, 'removed from partial solution')
         #print 'partial solution now', partial_solution
         #print 'row_ids going in as', row_ids
+        #run on old grid
         return solver(grid, row_ids, partial_solution, level_dict, level)
-        # run on old grid
-
     else:
         return partial
 
