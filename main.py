@@ -39,15 +39,17 @@ def solve(csv_name):
     solution, level_dict = ax.solve_once(grid)
     level = max(level_dict.keys())
     print ('level', level)
+    
 
 if __name__ == '__main__':
+    pass
     #build_wiki_example()
     #build_soma()
     #build_example()
-    build_bedlam()
-    #solve('wiki_example.csv')
+    #build_bedlam()
+    solve('wiki_example.csv')
     #solve('soma.csv')
     #solve('example.csv')
-    solve('bedlam.csv')
+    #solve('bedlam.csv')
 
     

@@ -136,19 +136,13 @@ def solve_once(grid):
     solution = solver(grid, row_ids, partial_solution, level_dict, level)
     print ('solution as')
     print (solution)
-    return solution, level_dict
-
-def solution_handler(grid, solution, n_shapes, box_size):
-    #print grid.shape
-    #print solution
     solution_grid = np.take(grid, solution, axis=0)
-    #print solution_grid
     print (solution_grid)
-    print (solution_grid.shape, (n_shapes, box_size**3+n_shapes))
-    solution_grid.shape == (n_shapes, box_size**3+n_shapes)
-    print ('Solution is')
+    #print (solution_grid.shape, (n_shapes, box_size**3+n_shapes))
+    #print (solution_grid.shape == (n_shapes, box_size**3+n_shapes))
     print (np.sum(solution_grid, axis=0).all())
-    return solution_grid
+    return solution, level_dict
+    
 
 if __name__ == '__main__':
     pass
