@@ -1,7 +1,7 @@
 import shape_reader
-import coordinate_handler as co 
+import coordinate_handler as co
 import string
-import numpy as np 
+import numpy as np
 
 np.set_printoptions(linewidth=150)
 
@@ -37,10 +37,11 @@ def build_from_sets(universe, sets):
             if space in shape:
                 grid[i][j] = 1
     return grid
-        
+
 def save(filepath, grid):
     print('Saving', filepath, grid.shape)
-    np.savetxt(filepath, grid, delimiter=",")
+    print (grid)
+    np.savetxt(filepath, grid, fmt='%d', delimiter=",")
 
 if __name__ == '__main__':
     pass

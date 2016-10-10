@@ -17,8 +17,8 @@ def test(shape_dict, n_shapes, box_size):
     assert as_array.sum() == box_size**3
 
 if __name__ == '__main__':
+    pass
     n_shapes = 7
     box_size = 3
     shape_dict = read('soma.txt', n_shapes, box_size)
     test(shape_dict, n_shapes, box_size)
-

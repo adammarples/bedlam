@@ -31,7 +31,7 @@ def build_example():
     sets = [A1, A2, A3, A4, A5]
     grid = bx.build_from_sets(S, sets)
     bx.save('example.csv', grid)
-    
+
 def solve(csv_name):
     grid = ax.load(csv_name)
     print ('Load', csv_name, 'as', grid.shape)
@@ -39,7 +39,7 @@ def solve(csv_name):
     solution, level_dict = ax.solve_once(grid)
     level = max(level_dict.keys())
     print ('level', level)
-    
+
 
 if __name__ == '__main__':
     pass
@@ -47,9 +47,7 @@ if __name__ == '__main__':
     #build_soma()
     #build_example()
     #build_bedlam()
-    solve('wiki_example.csv')
+    #solve('wiki_example.csv')
     #solve('soma.csv')
-    #solve('example.csv')
+    solve('example.csv')
     #solve('bedlam.csv')
-
-    
