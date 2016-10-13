@@ -35,19 +35,20 @@ def build_example():
 def solve(csv_name):
     grid = ax.load(csv_name)
     print ('Load', csv_name, '>', grid.shape)
-    #print(grid)
-    solution, level_dict = ax.solve_once(grid)
-    level = max(level_dict.keys())
-    print ('level', level)
+    ax.run_solver(grid)
 
 
 if __name__ == '__main__':
     pass
+    try:
+        1/0
+    except ZeroDivisionError:
+        print (7)
     #build_wiki_example()
     #build_soma()
     #build_example()
     #build_bedlam()
     #solve('wiki_example.csv')
-    #solve('soma.csv')
-    solve('example.csv')
+    solve('soma.csv')
+    #solve('example.csv')
     #solve('bedlam.csv')
