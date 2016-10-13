@@ -1,5 +1,10 @@
 import build_matrix as bx
-import algorithm_x as ax
+import algx
+import numpy as np
+from linked_lists import link_a_grid
+
+def load(filepath):
+    return np.loadtxt(filepath, delimiter=",")
 
 def build_soma():
     grid = bx.build_from_txt('soma.txt', 7, 3)
@@ -33,9 +38,10 @@ def build_example():
     bx.save('example.csv', grid)
 
 def solve(name):
-    grid = ax.load('{}.csv'.format(name))
+    grid = load('{}.csv'.format(name))
     print ('Load', name, '>', grid.shape)
-    ax.run_solver(grid, name)
+    root = link_a_grid(grid)
+    algx.run_solver(root)
 
 
 if __name__ == '__main__':
