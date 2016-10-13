@@ -1,9 +1,10 @@
-
+#from linked_lists import root_as_grid
 
 def run_solver(root):
     c = pick_column(root)
     cover_column(c)
-    uncover_column(c)
+    #root_as_grid(root, grid)
+    #uncover_column(c)
 
 def pick_column(root):
     # Pick a column deterministically
@@ -45,7 +46,7 @@ def uncover_column(c):
 
 def main():
     from main import load, link_a_grid
-    name = 'example'
+    name = 'knuth'
     grid = load('{}.csv'.format(name))
     print ('Load', name, '>', grid.shape)
     root = link_a_grid(grid)
