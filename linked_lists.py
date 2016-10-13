@@ -54,15 +54,19 @@ class Node:
         self.l = left
         self.r = right
 
-    def remove(self):
-        self.u.d = self.d
-        self.d.u = self.u
+    def remove_horiz(self):
         self.r.l = self.l
         self.l.r = self.r
 
-    def reinsert(self):
+    def remove_vert(self):
+        self.u.d = self.d
+        self.d.u = self.u
+
+    def insert_vert(self):
         self.u.d = self
         self.d.u = self
+
+    def insert_horiz(self):
         self.l.r = self
         self.r.l = self
 
@@ -80,7 +84,6 @@ def link_a_list(node_list):
     row_list = LinkedList()
     for node in node_list:
         row_list.add_horizontally(node)
-
 
 
 def link_a_grid(grid):
