@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 class LinkedList:
     """ To remove a, reroute parent and child for L and R
     R[L[a]] = R[a]
@@ -73,18 +75,18 @@ class ColumnObject(Node):
         self.name = name
         self.c = self
 
-def iterate_vertically(c):
-    node = c
-    while node is not c.u:
-        node = node.d
-        yield node
 
-def main():
-    import algorithm_x as ax
-    name = 'example'
-    grid = ax.load('{}.csv'.format(name))
+def link_a_list(node_list):
+    row_list = LinkedList()
+    for node in node_list:
+        row_list.add_horizontally(node)
+
+
+
+def link_a_grid(grid):
     n_rows, n_cols = grid.shape
     #print(grid)
+    node_dict = defaultdict(list)
     headers = LinkedList()
     root = ColumnObject(name='root')
     headers.add_horizontally(root)
@@ -96,19 +98,27 @@ def main():
         headers.add_horizontally(col_obj)
         col_list = LinkedList()
         col_list.add_vertically(col_obj)
-
         for i in range(n_rows):
             if grid[i][j]:
                 node = Node(name=(i, j))
+                node_dict[i].append(node)
                 node.c = col_obj
                 col_list.add_vertically(node)
 
+
     # Now link Row Lists
-    for c in headers.members[1:]:#skip root
-        for x in iterate_vertically(c):
-            print (c.name, x.name)
+    for row, node_list in node_dict.items():
+        row_list = LinkedList()
+        for node in node_list:
+            row_list.add_horizontally(node)
 
+    return root
 
+def main():
+    import algorithm_x as ax
+    name = 'example'
+    grid = ax.load('{}.csv'.format(name))
+    root = link_a_grid(grid)
 
 if __name__ == '__main__':
     main()
