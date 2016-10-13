@@ -4,44 +4,61 @@ def search(root, k, solutions):
 
     print ('k', k)
     if root == root.r:
-        print ('Solution found')#print solution
+        print ('Solution found', [n.name[0] for n in solutions])#print solution
         return
     c = pick_column(root)
-    print ('Covering', c.name)
+    #print ('Covering', c.name)
     cover_column(c)
 
     node = c.d
     while node is not c:
-        print ('Node', node.name)
+        print ('down to', node.name, '(append)')
         solutions.append(node)#Ok
+
         rnod = node.r
         while rnod is not node:
-            cover_column(rnod)
+            print ('right to', rnod.name)
+            cover_column(rnod.c)
             rnod = rnod.r
-        node = node.d
+
         search(root, k+1, solutions)
-        node = solutions[k]
-        print (node.name )
+
+        node = solutions[k]#??
+        #node = solutions.pop()#??
+
+        print ('node from solutions', node.name)
+        print (node.name)
+
         c = c.r
+
         lnod = node.l
         while lnod is not node:
-            uncover_column(lnod)
+            print ('left to', lnod.name)
+            uncover_column(lnod.c)
             lnod = lnod.l
+
+        node = node.d
+
     uncover_column(c)
 
 
 def run_solver(root):
     k = 0
     solutions = []
+
     search(root, k, solutions)
 
 def pick_column(root):
     # Pick a column deterministically
     s = 1e6
     c = root
+    #print ('c', c.name)
     node = root.r
+    #print ('node', node.name)
     while node is not root:
+        #print ('node', node.name)
         if node.s < s:
+            #print ('new minimum', node.s, s, node.name)
             c = node
             s = node.s
         node = node.r
@@ -49,11 +66,14 @@ def pick_column(root):
 
 def cover_column(c):
     # "Cover" column c
+    print ('cover horizontally', c.name)
     c.remove_horiz()
     node = c.d
     while node is not c:
         rnod = node.r
+        #print (node, rnod)
         while rnod is not node:
+            print ('cover vertically', rnod.name)
             rnod.remove_vert()
             rnod.c.s -= 1
             rnod = rnod.r
@@ -74,7 +94,7 @@ def uncover_column(c):
 
 def main():
     from main import load, link_a_grid
-    name = 'knuth'
+    name = 'example'
     grid = load('{}.csv'.format(name))
     print ('Load', name, '>', grid.shape)
     root = link_a_grid(grid)
