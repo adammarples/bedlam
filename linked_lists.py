@@ -1,4 +1,5 @@
 from collections import defaultdict
+#import numpy as np
 
 class LinkedList:
     """ To remove a, reroute parent and child for L and R
@@ -74,7 +75,6 @@ class Node:
 class ColumnObject(Node):
     def __init__(self, name=None, size=None):
         super().__init__()
-        #print (self.__dict__)
         self.s = size
         self.name = name
         self.c = self
@@ -85,15 +85,12 @@ def link_a_list(node_list):
     for node in node_list:
         row_list.add_horizontally(node)
 
-
 def link_a_grid(grid):
     n_rows, n_cols = grid.shape
-    #print(grid)
     node_dict = defaultdict(list)
     headers = LinkedList()
     root = ColumnObject(name='root')
     headers.add_horizontally(root)
-
     # Make Column Lists
     for j in range(n_cols):
         col = grid.T[j]
@@ -107,21 +104,32 @@ def link_a_grid(grid):
                 node_dict[i].append(node)
                 node.c = col_obj
                 col_list.add_vertically(node)
-
-
     # Now link Row Lists
     for row, node_list in node_dict.items():
         row_list = LinkedList()
         for node in node_list:
             row_list.add_horizontally(node)
-
     return root
 
-def main():
-    import algorithm_x as ax
-    name = 'example'
-    grid = ax.load('{}.csv'.format(name))
-    root = link_a_grid(grid)
+# def root_as_grid(root, grid):
+#     nodes = []
+#     node = root.r
+#     while node is not root:
+#         dnod = node.d
+#         while dnod is not node:
+#             nodes.append(dnod.name)
+#             #print (dnod.name)
+#             dnod = dnod.d
+#         node = node.r
+#     grid = np.zeros(grid.shape)
+#     for node_name in nodes:
+#         grid[node_name] = 1
+#     return grid
 
 if __name__ == '__main__':
-    main()
+    import algorithm_x as ax
+    name = 'knuth'
+    grid = ax.load('{}.csv'.format(name))
+    print (grid)
+    root = link_a_grid(grid)
+    root_as_grid(root, grid.shape)

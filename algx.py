@@ -1,9 +1,39 @@
+#from linked_lists import root_as_grid
+
+def search(root, k, solutions):
+
+    print ('k', k)
+    if root == root.r:
+        print ('Solution found')#print solution
+        return
+    c = pick_column(root)
+    print ('Covering', c.name)
+    cover_column(c)
+
+    node = c.d
+    while node is not c:
+        print ('Node', node.name)
+        solutions.append(node)#Ok
+        rnod = node.r
+        while rnod is not node:
+            cover_column(rnod)
+            rnod = rnod.r
+        node = node.d
+        search(root, k+1, solutions)
+        node = solutions[k]
+        print (node.name )
+        c = c.r
+        lnod = node.l
+        while lnod is not node:
+            uncover_column(lnod)
+            lnod = lnod.l
+    uncover_column(c)
 
 
 def run_solver(root):
-    c = pick_column(root)
-    cover_column(c)
-    uncover_column(c)
+    k = 0
+    solutions = []
+    search(root, k, solutions)
 
 def pick_column(root):
     # Pick a column deterministically
@@ -15,7 +45,6 @@ def pick_column(root):
             c = node
             s = node.s
         node = node.r
-    print (node.name)
     return c
 
 def cover_column(c):
@@ -45,7 +74,7 @@ def uncover_column(c):
 
 def main():
     from main import load, link_a_grid
-    name = 'example'
+    name = 'knuth'
     grid = load('{}.csv'.format(name))
     print ('Load', name, '>', grid.shape)
     root = link_a_grid(grid)
