@@ -2,38 +2,39 @@
 
 def search(root, k, solutions):
 
-    print ('k', k)
+    #print ('k', k)
     if root == root.r:
         print ('Solution found', [n.name[0] for n in solutions])#print solution
-        return
+        return solutions
     c = pick_column(root)
     #print ('Covering', c.name)
     cover_column(c)
 
     node = c.d
     while node is not c:
-        print ('down to', node.name, '(append)')
+        #print ('down to', node.name, '(append)')
         solutions.append(node)#Ok
 
         rnod = node.r
         while rnod is not node:
-            print ('right to', rnod.name)
+            #print ('right to', rnod.name)
             cover_column(rnod.c)
             rnod = rnod.r
 
         search(root, k+1, solutions)
+        #print ('k', k)
+        #node = solutions[k-1]#??
+        #node = solutions[k-1]#??
+        node = solutions.pop()#??
+        #print ('node from solutions', k, node.name)
+        #print (node.name)
 
-        node = solutions[k]#??
-        #node = solutions.pop()#??
-
-        print ('node from solutions', node.name)
-        print (node.name)
-
-        c = c.r
+        c = node.c
+        #print ('c picked as', c.name)
 
         lnod = node.l
         while lnod is not node:
-            print ('left to', lnod.name)
+            #print ('left to', lnod.name)
             uncover_column(lnod.c)
             lnod = lnod.l
 
@@ -45,8 +46,8 @@ def search(root, k, solutions):
 def run_solver(root):
     k = 0
     solutions = []
-
     search(root, k, solutions)
+
 
 def pick_column(root):
     # Pick a column deterministically
@@ -66,14 +67,14 @@ def pick_column(root):
 
 def cover_column(c):
     # "Cover" column c
-    print ('cover horizontally', c.name)
+    #print ('cover horizontally', c.name)
     c.remove_horiz()
     node = c.d
     while node is not c:
         rnod = node.r
         #print (node, rnod)
         while rnod is not node:
-            print ('cover vertically', rnod.name)
+            #print ('cover vertically', rnod.name)
             rnod.remove_vert()
             rnod.c.s -= 1
             rnod = rnod.r
