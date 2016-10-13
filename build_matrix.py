@@ -12,10 +12,12 @@ def build_from_txt(shape_file, n_shapes, box_size):
     for shape_id, shape_array in shape_dict.items():
         # Convert Coords
         vector_list = co.vectors(shape_array, box_size)
-        # Rotate
+        # Rotate, Do not rotate 1 shape for reducing mirror solutions
         rotation_list = co.rotate_shape(vector_list)
         # Recentre
         recentre_list = co.recentre_all(rotation_list)
+        # Massively Reduce
+        reduced_list = co.reduce_all(recentre_list)
         # Translate
         translated_list = co.translate_all(recentre_list, box_size)
         # Convert to Grid
@@ -44,4 +46,5 @@ def save(filepath, grid):
     np.savetxt(filepath, grid, fmt='%d', delimiter=",")
 
 if __name__ == '__main__':
-    pass
+    grid = build_from_txt('soma.txt', 7, 3)
+    save('soma.csv', grid)

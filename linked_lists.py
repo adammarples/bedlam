@@ -1,5 +1,4 @@
 from collections import defaultdict
-#import numpy as np
 
 class LinkedList:
     """ To remove a, reroute parent and child for L and R
@@ -40,6 +39,7 @@ class LinkedList:
             node.d = node
             node.u = node
         self.members.append(node)
+
 
 class Node:
     def __init__(self, name=None, c=None, up=None, down=None, left=None, right=None):
@@ -94,36 +94,15 @@ def link_a_grid(grid):
                 node_dict[i].append(node)
                 node.c = col_obj
                 col_list.add_vertically(node)
-
     # Now link Row Lists
     for row, node_list in node_dict.items():
         row_list = LinkedList()
         for node in node_list:
             row_list.add_horizontally(node)
-
     return root
-
-# def root_as_grid(root, grid):
-#     nodes = []
-#     node = root.r
-#     while node is not root:
-#         dnod = node.d
-#         while dnod is not node:
-#             nodes.append(dnod.name)
-#             #print (dnod.name)
-#             dnod = dnod.d
-#         node = node.r
-#     grid = np.zeros(grid.shape)
-#     for node_name in nodes:
-#         grid[node_name] = 1
-#     return grid
 
 if __name__ == '__main__':
     import algorithm_x as ax
     name = 'example'
     grid = ax.load('{}.csv'.format(name))
-    #print (grid)
     root = link_a_grid(grid)
-    #print (root.r.d.name)
-    #print (root.r.r.r.d.d.name)
-    #root_as_grid(root, grid.shape)

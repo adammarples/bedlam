@@ -103,5 +103,9 @@ def convert_all_to_grid(array_list, box_size):
 def create_shape_grid(converted_list, array_id_vector):
     return np.array([np.append(grid_line, array_id_vector) for grid_line in converted_list])
 
+def co.reduce_all(recentre_list)
+    reduced_list = recentre_list
+    return reduced_list
+
 if __name__ == '__main__':
     pass
