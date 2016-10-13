@@ -12,7 +12,8 @@ def solve(name):
     algx.run_solver(root)
 
 if __name__ == '__main__':
-    pass
+    """https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
+    """
     #solve('wiki_example')
     #solve('soma')
     #solve('example')
