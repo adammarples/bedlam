@@ -73,6 +73,11 @@ class ColumnObject(Node):
         self.name = name
         self.c = self
 
+def iterate_vertically(c):
+    node = c
+    while node is not c.u:
+        node = node.d
+        yield node
 
 def main():
     import algorithm_x as ax
@@ -99,8 +104,9 @@ def main():
                 col_list.add_vertically(node)
 
     # Now link Row Lists
-    for c in headers.members:
-        print(c.name)
+    for c in headers.members[1:]:#skip root
+        for x in iterate_vertically(c):
+            print (c.name, x.name)
 
 
 
