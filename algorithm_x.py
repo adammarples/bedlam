@@ -60,8 +60,9 @@ def solver(name, grid, col_ids, row_ids, partial_solution, level_dict, level):
     #print ('bump level', level, 'to row', level_dict[level])
     popped = partial_solution.pop()
     print (popped, 'removed from partial solution')
-    solver(name, grid, col_ids, row_ids, partial_solution, level_dict, level)
+    solution = solver(name, grid, col_ids, row_ids, partial_solution, level_dict, level)
     print ('Recursion level finished.')
+    print ('Solution', solution)
     return
 
 def pick_column(grid):
@@ -116,4 +117,7 @@ def run_solver(grid, name):
 
 
 if __name__ == '__main__':
-    pass
+    name = 'wiki_example'
+    grid = load('{}.csv'.format(name))
+    print ('Load', name, '>', grid.shape)
+    run_solver(grid, name)
