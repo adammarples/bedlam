@@ -63,6 +63,14 @@ class Node:
         self.l.r = self
         self.r.l = self
 
+class ColumnObject(Node):
+    def __init__(self, name, size):
+        super().__init__()
+        self.name = name
+        self.s = size
+        print (self.__dict__)
+
+
 def walk(grid):
     m, n = grid.shape
     for j in range(m):
@@ -76,15 +84,12 @@ def main():
     grid = ax.load('{}.csv'.format(name))
     n_rows, n_cols = grid.shape
     print(grid)
-    lx_row = LinkedList()
+    column_list = LinkedList()
 
-    for col in range(n_cols):
-        lx_row.add_to_tail()
-    #
-    # for x in lx_row.iterate():
-    #     print (x.name)
-
-
+    for j in range(n_cols):
+        column = grid.T[j]
+        size = column.sum()
+        ColumnObject(j, size)
 
 
 
