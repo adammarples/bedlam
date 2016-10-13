@@ -10,13 +10,21 @@ class LinkedList:
 
     """
     def __init__(self):
-        self.head = Node(None, 'head')
-        self.tail = self.head
+        self.header = ListHeader()
+        self.members = []
 
-    def add_to_tail(self, name):
-        node = Node(self.head, name, left=self.tail)
-        self.tail.r = node
-        self.tail = node
+    def add_to_tail(self):
+        node = Node()
+        if self.members == []:
+            pass
+        else:
+            parent = self.members[-1]
+            head = self.members[0]
+            node.l = parent
+            node.r = head
+            parent.r = node
+            head.l = node
+        self.members.append(node)
 
     def remove_by_name(self, name):
         node = self.head
@@ -31,10 +39,13 @@ class LinkedList:
             node = node.r
             yield node
 
+class ListHeader:
+    def __init__(self):
+        pass
+
 class Node:
-    def __init__(self, head, name, up=None, down=None, left=None, right=None):
-        self.head = head
-        self.name = name
+    def __init__(self, c=None, up=None, down=None, left=None, right=None):
+        self.c = c
         self.u = up
         self.d = down
         self.l = left
@@ -52,6 +63,13 @@ class Node:
         self.l.r = self
         self.r.l = self
 
+def walk(grid):
+    m, n = grid.shape
+    for j in range(m):
+        for i in range(n):
+            if grid[i][j]:
+                pass
+
 def main():
     import algorithm_x as ax
     name = 'example'
@@ -59,11 +77,13 @@ def main():
     n_rows, n_cols = grid.shape
     print(grid)
     lx_row = LinkedList()
+
     for col in range(n_cols):
-        lx_row.add_to_tail(col)
-    #lx_row.show()
-    for x in lx_row.iterate():
-        print (x.name)
+        lx_row.add_to_tail()
+    #
+    # for x in lx_row.iterate():
+    #     print (x.name)
+
 
 
 
