@@ -33,38 +33,24 @@ def solver(name, grid, col_ids, row_ids, partial_solution, level_dict, level):
     """
 
     bump_row = level_dict[level]
-    #print('down at level', level, 'with bump', bump_row)
-    #print (grid)
     if not grid.size:
         print( 'grid is empty, success.')
         saving(partial_solution, name)
-        #print ('Returning all solutions', convert(all_solutions))
         return
     c = pick_column(grid)
-    #print('c =', c, [col_ids[c]+1])
     r = pick_row(grid, c, bump_row)
     if r is None:
         print ('r is None, impossible grid.')
-        #print ('Returning all solutions', all_solutions)
         return
-    #print('r =', r, [ascii_uppercase[row_ids[r]]])
     print('putting', row_ids[r], 'in partial solution')
     partial_solution.append(row_ids[r])
     rows_to_delete, cols_to_delete, rows_to_keep, cols_to_keep = grid_magic(grid, c, r)
     new_grid = reduce_grid(grid, rows_to_delete, cols_to_delete, rows_to_keep, cols_to_keep,  row_ids, col_ids)
-
     # Recursion
     level += 1
     new_col_ids = [col_ids[x] for x in cols_to_keep]
     new_row_ids = [row_ids[x] for x in rows_to_keep]
     solver(name, new_grid, new_col_ids, new_row_ids, partial_solution, level_dict, level)
-    #print ('Partial', convert(partial))
-    # if partial == None:
-    #     print ('Failure!')
-    # if partial != None:
-    #     print ('Solution Found.')
-    #    print ('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SOLUTION', partial)
-    #print ('Stepping back.')
     # clear bumps on this level before leaving
     level_dict[level] = 0
     # step up the tree, add a bump
@@ -75,9 +61,7 @@ def solver(name, grid, col_ids, row_ids, partial_solution, level_dict, level):
     popped = partial_solution.pop()
     print (popped, 'removed from partial solution')
     solver(name, grid, col_ids, row_ids, partial_solution, level_dict, level)
-    #print ('Solution', solution)
     print ('Recursion level finished.')
-    #print ('Returning', convert(all_solutions))
     return
 
 def pick_column(grid):
@@ -88,20 +72,14 @@ def pick_column(grid):
         if colsum < newmin:
             pick_idx = i
             newmin = colsum
-        #print 'col', i, col
-    #print 'pick col', pick_idx, 'as', pick_col
     return pick_idx
 
 def pick_row(grid, col_ind, bump_row):
-    #print 'picking row'
-    #print grid.shape, col_ind
     for i, row in enumerate(grid):
         if row[col_ind]:
             if bump_row:
                 bump_row -= 1
-                #print 'bumping row', bump_row
                 continue
-            #print 'pick row', i, 'as', row
             return i
 
 def grid_magic(grid, c, r):
