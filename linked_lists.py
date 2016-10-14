@@ -1,5 +1,4 @@
 from collections import defaultdict
-#import numpy as np
 
 class LinkedList:
     """ To remove a, reroute parent and child for L and R
@@ -23,6 +22,9 @@ class LinkedList:
             node.r = head
             parent.r = node
             head.l = node
+        else:
+            node.r = node
+            node.l = node
         self.members.append(node)
 
     def add_vertically(self, node):
@@ -33,18 +35,11 @@ class LinkedList:
             node.d = head
             parent.d = node
             head.u = node
+        else:
+            node.d = node
+            node.u = node
         self.members.append(node)
 
-    def iterate_horizontally(self):
-        if self.members == []:
-            return
-        print( self.members)
-        head = self.members[0]
-        tail = self.members[-1]
-        node = head
-        while node is not tail:
-            node = node.r
-            yield node
 
 class Node:
     def __init__(self, name=None, c=None, up=None, down=None, left=None, right=None):
@@ -80,11 +75,6 @@ class ColumnObject(Node):
         self.c = self
 
 
-def link_a_list(node_list):
-    row_list = LinkedList()
-    for node in node_list:
-        row_list.add_horizontally(node)
-
 def link_a_grid(grid):
     n_rows, n_cols = grid.shape
     node_dict = defaultdict(list)
@@ -111,25 +101,8 @@ def link_a_grid(grid):
             row_list.add_horizontally(node)
     return root
 
-# def root_as_grid(root, grid):
-#     nodes = []
-#     node = root.r
-#     while node is not root:
-#         dnod = node.d
-#         while dnod is not node:
-#             nodes.append(dnod.name)
-#             #print (dnod.name)
-#             dnod = dnod.d
-#         node = node.r
-#     grid = np.zeros(grid.shape)
-#     for node_name in nodes:
-#         grid[node_name] = 1
-#     return grid
-
 if __name__ == '__main__':
     import algorithm_x as ax
-    name = 'knuth'
+    name = 'example'
     grid = ax.load('{}.csv'.format(name))
-    print (grid)
     root = link_a_grid(grid)
-    root_as_grid(root, grid.shape)

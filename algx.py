@@ -1,39 +1,32 @@
-#from linked_lists import root_as_grid
-
-def search(root, k, solutions):
-
-    print ('k', k)
+def search(name, root, k, solutions):
     if root == root.r:
-        print ('Solution found')#print solution
+        with open('{}_solutions.txt'.format(name), 'a') as fi:
+            print ([n.name[0] for n in solutions], file=fi)
+        print ('Solution found', [n.name[0] for n in solutions])
         return
     c = pick_column(root)
-    print ('Covering', c.name)
     cover_column(c)
-
     node = c.d
     while node is not c:
-        print ('Node', node.name)
-        solutions.append(node)#Ok
+        solutions.append(node)
         rnod = node.r
         while rnod is not node:
-            cover_column(rnod)
+            cover_column(rnod.c)
             rnod = rnod.r
-        node = node.d
-        search(root, k+1, solutions)
-        node = solutions[k]
-        print (node.name )
-        c = c.r
+        search(name, root, k+1, solutions)
+        node = solutions.pop()
+        c = node.c
         lnod = node.l
         while lnod is not node:
-            uncover_column(lnod)
+            uncover_column(lnod.c)
             lnod = lnod.l
+        node = node.d
     uncover_column(c)
 
-
-def run_solver(root):
+def run_solver(name, root):
     k = 0
     solutions = []
-    search(root, k, solutions)
+    search(name, root, k, solutions)
 
 def pick_column(root):
     # Pick a column deterministically
@@ -71,14 +64,13 @@ def uncover_column(c):
         node = node.u
     c.insert_horiz()
 
-
 def main():
     from main import load, link_a_grid
-    name = 'knuth'
+    name = 'soma'
     grid = load('{}.csv'.format(name))
     print ('Load', name, '>', grid.shape)
     root = link_a_grid(grid)
-    run_solver(root)
+    run_solver(name, root)
 
 if __name__ == '__main__':
     main()
