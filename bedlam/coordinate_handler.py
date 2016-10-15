@@ -98,7 +98,7 @@ def convert_to_grid(array, box_size):
     return box_notation(array, box_size).flatten()
 
 def convert_all_to_grid(array_list, box_size):
-    return [convert_to_grid(array, box_size) for array in array_list]
+    return np.array([convert_to_grid(array, box_size) for array in array_list])
 
 def convert_to_vector(flatgrid, box_size):
     array = np.array(flatgrid).reshape((box_size, box_size, box_size))
@@ -112,7 +112,7 @@ def reduce_flattened(flat_list):
     for grid in flat_list:
         strings.append(''.join([str(int(x)) for x in grid]))
     setted = set(strings)
-    grids = [[int(j) for j in x] for x in setted]
+    grids = np.array([[int(j) for j in x] for x in setted])
     return grids
 
 def reduce_all(array_list, box_size):
