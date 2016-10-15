@@ -107,6 +107,14 @@ def convert_to_vector(flatgrid, box_size):
 def create_shape_grid(converted_list, array_id_vector):
     return np.array([np.append(grid_line, array_id_vector) for grid_line in converted_list])
 
+def reduce_flattened(flat_list):
+    strings = []
+    for grid in flat_list:
+        strings.append(''.join([str(int(x)) for x in grid]))
+    setted = set(strings)
+    grids = [[int(j) for j in x] for x in setted]
+    return grids
+
 def reduce_all(array_list, box_size):
     strings = []
     reduced_list = []

@@ -9,6 +9,7 @@ def build_from_txt(shape_file, n_shapes, box_size):
     # Load shapes
     shape_dict = shape_reader.read(shape_file, n_shapes, box_size)
     shape_reader.test(shape_dict, n_shapes, box_size)
+    total_list = []
     for shape_id, shape_array in shape_dict.items():
         # Convert Coords
         vector_list = co.vectors(shape_array, box_size)
@@ -26,6 +27,10 @@ def build_from_txt(shape_file, n_shapes, box_size):
         translated_list = co.translate_all(recentre_list, box_size)
         # Convert to Grid
         converted_list = co.convert_all_to_grid(translated_list, box_size)
+
+        #reduce copies simple
+        converted_list = co.reduce_flattened(converted_list)
+
         # Array id grid
         array_id_vector = co.create_shape_grid_vector(shape_id, n_shapes)
         # Concatenate

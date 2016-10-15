@@ -24,7 +24,7 @@ def main():
     #solve('example')
     #solve('knuth')
     solve('soma')
-    #solve('bedlam')
+    solve('bedlam')
 
 if __name__ == '__main__':
     pass
