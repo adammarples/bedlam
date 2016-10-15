@@ -63,8 +63,8 @@ class ColumnObject(Node):
         self.name = name
         self.c = self
 
-
 def link_a_grid(grid):
+    print ('Linking Grid')
     n_rows, n_cols = grid.shape
     node_dict = defaultdict(list)
     root = ColumnObject(name='root')
@@ -89,6 +89,7 @@ def link_a_grid(grid):
         for node in node_list:
             node.join_horiz(current_horiz_node)
             current_horiz_node = node
+    print ('Done')
     return root
 
 
