@@ -49,4 +49,4 @@ def save(filepath, grid):
 
 if __name__ == '__main__':
     grid = build_from_txt('soma.txt', 7, 3)
-    save('soma.csv', grid)
+    bx.save(os.path.join(dirname, 'soma.csv'), grid)
