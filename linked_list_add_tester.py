@@ -15,7 +15,7 @@ def self_join(node):
     node.r = node
     node.l = node
 
-def join_to(self, left):
+def join_horiz(self, left):
     self.l = left
     left.r = self
     while left.l.r is not self:
@@ -24,15 +24,15 @@ def join_to(self, left):
     left.l = self
 
 def new_method():
-    Node.join_to = join_to
+    Node.join_horiz = join_horiz
     root = ColumnObject(name='root')
     self_join(root)
     a = ColumnObject(name='a', size=1)
     self_join(a)
     b = ColumnObject(name='b', size=1)
     self_join(b)
-    a.join_to(root)
-    b.join_to(a)
+    a.join_horiz(root)
+    b.join_horiz(a)
     return root
 
 
