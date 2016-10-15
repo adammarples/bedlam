@@ -47,7 +47,7 @@ def save(name, n_shapes, box_size):
 
 def main():
     save('soma', 7, 3)
-    save('bedlam', 13, 4)
-    
+    #save('bedlam', 13, 4)
+
 if __name__ == '__main__':
     main()
