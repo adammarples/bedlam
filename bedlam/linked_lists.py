@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-class LinkedList:
+class Node:
     """ To remove a, reroute parent and child for L and R
     R[L[a]] = R[a]
     L[R[a]] = L[a]
@@ -11,44 +11,13 @@ class LinkedList:
     because a retains all its links
 
     """
-    def __init__(self):
-        self.members = []
-
-    def add_horizontally(self, node):
-        if self.members != []:
-            parent = self.members[-1]
-            head = self.members[0]
-            node.l = parent
-            node.r = head
-            parent.r = node
-            head.l = node
-        else:
-            node.r = node
-            node.l = node
-        self.members.append(node)
-
-    def add_vertically(self, node):
-        if self.members != []:
-            parent = self.members[-1]
-            head = self.members[0]
-            node.u = parent
-            node.d = head
-            parent.d = node
-            head.u = node
-        else:
-            node.d = node
-            node.u = node
-        self.members.append(node)
-
-
-class Node:
-    def __init__(self, name=None, c=None, up=None, down=None, left=None, right=None):
+    def __init__(self, name=None, c=None):
         self.name = name
         self.c = c
-        self.u = up
-        self.d = down
-        self.l = left
-        self.r = right
+        self.u = self
+        self.d = self
+        self.l = self
+        self.r = self
 
     def remove_horiz(self):
         self.r.l = self.l
@@ -66,6 +35,26 @@ class Node:
         self.l.r = self
         self.r.l = self
 
+    def join_horiz(self, left):
+        if left is None:
+            return
+        self.l = left
+        left.r = self
+        while left.l.r is not self:
+            left = left.l
+        self.r = left
+        left.l = self
+
+    def join_vert(self, up):
+        if up is None:
+            return
+        self.u = up
+        up.d = self
+        while up.u.d is not self:
+            up = up.u
+        self.d = up
+        up.u = self
+
 
 class ColumnObject(Node):
     def __init__(self, name=None, size=None):
@@ -74,35 +63,35 @@ class ColumnObject(Node):
         self.name = name
         self.c = self
 
-
 def link_a_grid(grid):
+    print ('Linking Grid')
     n_rows, n_cols = grid.shape
     node_dict = defaultdict(list)
-    headers = LinkedList()
     root = ColumnObject(name='root')
-    headers.add_horizontally(root)
     # Make Column Lists
+    current_column_node = root
     for j in range(n_cols):
         col = grid.T[j]
         col_obj = ColumnObject(name=j, size=col.sum())
-        headers.add_horizontally(col_obj)
-        col_list = LinkedList()
-        col_list.add_vertically(col_obj)
+        col_obj.join_horiz(current_column_node)
+        current_row_node = col_obj
         for i in range(n_rows):
             if grid[i][j]:
                 node = Node(name=(i, j))
                 node_dict[i].append(node)
                 node.c = col_obj
-                col_list.add_vertically(node)
+                node.join_vert(current_row_node)
+                current_row_node = node
+        current_column_node = col_obj
     # Now link Row Lists
     for row, node_list in node_dict.items():
-        row_list = LinkedList()
+        current_horiz_node = None
         for node in node_list:
-            row_list.add_horizontally(node)
+            node.join_horiz(current_horiz_node)
+            current_horiz_node = node
+    print ('Done')
     return root
 
+
 if __name__ == '__main__':
-    import algorithm_x as ax
-    name = 'example'
-    grid = ax.load('{}.csv'.format(name))
-    root = link_a_grid(grid)
+    pass

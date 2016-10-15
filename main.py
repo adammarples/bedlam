@@ -1,8 +1,8 @@
-import algx
-import numpy as np
-from linked_lists import link_a_grid
-import cProfile
 import os
+import cProfile
+import numpy as np
+from bedlam.linked_lists import link_a_grid
+from bedlam.algx import run_solver
 
 GRID_DIR = 'grids'
 
@@ -14,19 +14,19 @@ def solve(name):
     grid = load(gridpath)
     print ('Load', name, '>', grid.shape)
     root = link_a_grid(grid)
-    algx.run_solver(name, root)
+    run_solver(name, root)
 
 def main():
     """https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
     """
     pass
-    #solve('wiki_example')
+    solve('wiki_example')
     solve('example')
-    #solve('knuth')
-    #solve('soma')
+    solve('knuth')
+    solve('soma')
     #solve('bedlam')
 
 if __name__ == '__main__':
     pass
-    main()
-    #cProfile.run("main()")
+    #main()
+    cProfile.run("main()")
