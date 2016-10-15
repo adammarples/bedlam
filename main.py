@@ -20,14 +20,13 @@ def main():
     """https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
     """
     pass
-    solve('wiki_example')
-    solve('example')
-    solve('knuth')
+    #solve('wiki_example')
+    #solve('example')
+    #solve('knuth')
     solve('soma')
     #solve('bedlam')
 
 if __name__ == '__main__':
     pass
-    #main()
+    main()
     #cProfile.run("main()")
-    solve('bedlam')
