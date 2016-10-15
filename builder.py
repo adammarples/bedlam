@@ -1,6 +1,6 @@
 import build_matrix as bx
 import os
-
+print (GRID_DIR)
 GRID_DIR = 'grids'
 try:
     os.stat(GRID_DIR)
