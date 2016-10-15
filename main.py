@@ -23,8 +23,11 @@ def main():
     #solve('wiki_example')
     #solve('example')
     #solve('knuth')
+    solve('hoffmann')
+    solve('coffin')
+    solve('nob')
     #solve('soma')
-    solve('bedlam')
+    #solve('bedlam')
 
 if __name__ == '__main__':
     pass

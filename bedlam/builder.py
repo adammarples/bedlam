@@ -9,14 +9,11 @@ except:
     os.mkdir(GRID_DIR)
 TEXT_DIR = 'text'
 
-def build_soma():
-
-    grid = bx.build_from_txt(os.path.join(TEXT_DIR, 'soma.txt'), 7, 3)
-    bx.save(os.path.join(GRID_DIR, 'soma.csv'), grid)
-
-def build_bedlam():
-    grid = bx.build_from_txt(os.path.join(TEXT_DIR, 'bedlam.txt'), 13, 4)
-    bx.save(os.path.join(GRID_DIR, 'bedlam.csv'), grid)
+def build(name, n_shapes, box_size):
+    txt = '{}.txt'.format(name)
+    csv = '{}.csv'.format(name)
+    grid = bx.build_from_txt(os.path.join(TEXT_DIR, txt), n_shapes, box_size)
+    bx.save(os.path.join(GRID_DIR, csv), grid)
 
 def build_wiki_example():
     universe = {1, 2, 3, 4, 5, 6, 7}
@@ -56,7 +53,10 @@ def build_knuth():
 if __name__ == '__main__':
     pass
     build_wiki_example()
-    build_soma()
     build_example()
-    build_bedlam()
     build_knuth()
+    build('hoffmann', 6, 3)
+    build('coffin', 6, 3)
+    build('nob', 6, 3)
+    build('soma', 7, 3)
+    build('bedlam', 13, 4)
