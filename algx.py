@@ -1,6 +1,16 @@
+import os
+
+SOLUTION_DIR = 'solutions'
+try:
+    os.stat(SOLUTION_DIR)
+except:
+    print ('Creating', SOLUTION_DIR)
+    os.mkdir(SOLUTION_DIR)
+
 def search(name, root, k, solutions):
     if root == root.r:
-        with open('{}_solutions.txt'.format(name), 'a') as fi:
+        solution_path = os.path.join(SOLUTION_DIR, '{}_solutions.txt'.format(name))
+        with open(solution_path, 'a') as fi:
             print ([n.name[0] for n in solutions], file=fi)
         print ('Solution found', [n.name[0] for n in solutions])
         return
