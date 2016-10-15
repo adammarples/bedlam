@@ -23,7 +23,7 @@ def main():
     #solve('wiki_example')
     #solve('example')
     #solve('knuth')
-    solve('soma')
+    #solve('soma')
     solve('bedlam')
 
 if __name__ == '__main__':
