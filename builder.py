@@ -1,12 +1,22 @@
 import build_matrix as bx
+import os
+
+GRID_DIR = 'grids'
+try:
+    os.stat(GRID_DIR)
+except:
+    print ('Creating', GRID_DIR)
+    os.mkdir(GRID_DIR)
+TEXT_DIR = 'text'
 
 def build_soma():
-    grid = bx.build_from_txt('soma.txt', 7, 3)
-    bx.save('soma.csv', grid)
+
+    grid = bx.build_from_txt(os.path.join(TEXT_DIR, 'soma.txt'), 7, 3)
+    bx.save(os.path.join(GRID_DIR, 'soma.csv'), grid)
 
 def build_bedlam():
-    grid = bx.build_from_txt('bedlam.txt', 13, 4)
-    bx.save('bedlam.csv', grid)
+    grid = bx.build_from_txt(os.path.join(TEXT_DIR, 'bedlam.txt'), 13, 4)
+    bx.save(os.path.join(GRID_DIR, 'bedlam.csv'), grid)
 
 def build_wiki_example():
     universe = {1, 2, 3, 4, 5, 6, 7}
@@ -18,7 +28,7 @@ def build_wiki_example():
     F = {2, 7}
     sets = [A, B, C, D, E, F]
     grid = bx.build_from_sets(universe, sets)
-    bx.save('wiki_example.csv', grid)
+    bx.save(os.path.join(GRID_DIR, 'wiki_example.csv'), grid)
 
 def build_example():
     S = {1, 2, 3, 4, 5}
@@ -29,7 +39,7 @@ def build_example():
     A5 = {1, 4, 5}
     sets = [A1, A2, A3, A4, A5]
     grid = bx.build_from_sets(S, sets)
-    bx.save('example.csv', grid)
+    bx.save(os.path.join(GRID_DIR, 'example.csv'), grid)
 
 def build_knuth():
     S = {1, 2, 3, 4, 5, 6, 7}
@@ -41,7 +51,7 @@ def build_knuth():
     A6 = {4, 5, 7}
     sets = [A1, A2, A3, A4, A5, A6]
     grid = bx.build_from_sets(S, sets)
-    bx.save('knuth.csv', grid)
+    bx.save(os.path.join(GRID_DIR, 'knuth.csv'), grid)
 
 if __name__ == '__main__':
     pass
