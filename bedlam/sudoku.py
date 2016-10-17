@@ -82,6 +82,13 @@ def solve_sudoku(name):
             #print (col_j, row_i, n)
     indices.sort()
     cover_column_by_indices(root, indices)
+    uncovered = []
+    c = root.r
+    while c is not root:
+        uncovered.append(c.name)
+        c = c.r
+    print (indices)
+    print (uncovered)
     run_solver(name, root)
 
 def save_main_grid():
