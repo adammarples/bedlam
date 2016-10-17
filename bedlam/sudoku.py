@@ -2,7 +2,7 @@ import numpy as np
 import os
 from build_matrix import save
 from linked_lists import link_a_grid
-from algx import search, cover_column
+from algx import search, run_solver, cover_column
 
 SUDOKU_TEXT_DIR = 'sudoku_text'
 GRID_DIR = 'grids'
@@ -24,7 +24,7 @@ def load_sudoku(name):
         array = np.array(text).reshape((9,9))
         return array
 
-def indices_to_fill(col_j, row_i, n):
+def col_index_getter(col_j, row_i, n):
     """ generate col indices that need to be filled with 1's.
     """
     x = col_j // 3
@@ -35,6 +35,9 @@ def indices_to_fill(col_j, row_i, n):
     squ_mark = ((n * 9) + squ_k) + (2 * 81) - 1
     return col_mark, row_mark, squ_mark
 
+def row_index_getter(col_j, row_i, n):
+    cell = (row_i * 9) + col_j
+    return (cell * 9) + n 
 
 def build_main_sudoku_grid():
     """
@@ -52,7 +55,7 @@ def build_main_sudoku_grid():
         for n in range(9):
             col_j = cell % 9
             row_i = cell // 9
-            i1, i2, i3 = indices_to_fill(col_j, row_i, n)
+            i1, i2, i3 = col_index_getter(col_j, row_i, n)
             grid[i][i1] = 1
             grid[i][i2] = 1
             grid[i][i3] = 1
@@ -68,8 +71,10 @@ def cover_column_by_indices(root, indices):
             #print ('name', c.name, index)
             if c.name == index:
 
-                cover_column(c)
-                solutions.append(c.d)
+                c.remove_horiz()
+
+
+                #solutions.append(c.d)
                 break
             c = c.r
     return solutions
@@ -79,10 +84,10 @@ def solve_sudoku(name):
     grid = load(gridpath)
     root = link_a_grid(grid)
     array = load_sudoku(name)
-    indices = []
+    #indices = []
     for (row_i, col_j), n in np.ndenumerate(array):
         if n:
-            indices.extend(indices_to_fill(col_j, row_i, n))
+            indices.extend(col_index_getter(col_j, row_i, n))
             #print (col_j, row_i, n)
     indices.sort()
     solutions = cover_column_by_indices(root, indices)
@@ -91,11 +96,12 @@ def solve_sudoku(name):
     while c is not root:
         uncovered.append(c.name)
         c = c.r
-    print (indices[::-1])
+    print (indices[::])
     print (uncovered)
     print ([node.name for node in solutions])
-    k = 0
-    search(name, root, k, solutions)
+    #k = 0
+    run_solver(name, root)
+    #search(name, root, k, solutions)
 
 def save_main_grid():
     grid = build_main_sudoku_grid()
@@ -104,4 +110,7 @@ def save_main_grid():
 
 if __name__ == '__main__':
     save_main_grid()
-    solve_sudoku('example')
+    a = row_index_getter(0, 0, 0)
+    b = row_index_getter(8, 8, 8)
+    print (a, b)
+    #solve_sudoku('example')
