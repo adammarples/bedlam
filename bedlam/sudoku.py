@@ -2,7 +2,7 @@ import numpy as np
 import os
 from build_matrix import save
 from linked_lists import link_a_grid
-from algx import search, run_solver, cover_column
+from algx import run_solver, cover_column, search
 
 SUDOKU_TEXT_DIR = 'sudoku_text'
 GRID_DIR = 'grids'
@@ -37,7 +37,7 @@ def col_index_getter(col_j, row_i, n):
 
 def row_index_getter(col_j, row_i, n):
     cell = (row_i * 9) + col_j
-    return (cell * 9) + n 
+    return (cell * 9) + n
 
 def build_main_sudoku_grid():
     """
@@ -63,19 +63,20 @@ def build_main_sudoku_grid():
     print ('check', grid.sum()/3/81/9)
     return grid
 
-def cover_column_by_indices(root, indices):
+def cover_column_by_nodes(root, nodes):
     solutions = []
-    for index in indices[::-1]:
+    for node_xy in nodes:
+        (y, x) = node_xy
+        node_xy = (x, y)
         c = root.r
         while c is not root:
-            #print ('name', c.name, index)
-            if c.name == index:
-
-                c.remove_horiz()
-
-
-                #solutions.append(c.d)
-                break
+            node = c.d
+            while node is not c:
+                if node.name == node_xy:
+                    #print ('SOLUTION', node.c.name)
+                    solutions.append(node)
+                    cover_column(node.c)
+                node = node.d
             c = c.r
     return solutions
 
@@ -84,24 +85,25 @@ def solve_sudoku(name):
     grid = load(gridpath)
     root = link_a_grid(grid)
     array = load_sudoku(name)
-    #indices = []
+    nodes = []
     for (row_i, col_j), n in np.ndenumerate(array):
         if n:
-            indices.extend(col_index_getter(col_j, row_i, n))
+            row_index = row_index_getter(col_j, row_i, n)
+            col_indices = col_index_getter(col_j, row_i, n)
+            node_name = (col_indices[-1], row_index)
+            nodes.append(node_name)
             #print (col_j, row_i, n)
-    indices.sort()
-    solutions = cover_column_by_indices(root, indices)
+    nodes.sort()
+    nodes.reverse()
+    print ('Removing fixed numbers')
+    solutions = cover_column_by_nodes(root, nodes)
     uncovered = []
     c = root.r
     while c is not root:
         uncovered.append(c.name)
         c = c.r
-    print (indices[::])
-    print (uncovered)
-    print ([node.name for node in solutions])
-    #k = 0
-    run_solver(name, root)
-    #search(name, root, k, solutions)
+    k = 0
+    search(name, root, k, solutions)
 
 def save_main_grid():
     grid = build_main_sudoku_grid()
@@ -113,4 +115,4 @@ if __name__ == '__main__':
     a = row_index_getter(0, 0, 0)
     b = row_index_getter(8, 8, 8)
     print (a, b)
-    #solve_sudoku('example')
+    solve_sudoku('example')
