@@ -2,7 +2,7 @@ import numpy as np
 import os
 from build_matrix import save
 from linked_lists import link_a_grid
-from algx import run_solver, cover_column
+from algx import search, cover_column
 
 SUDOKU_TEXT_DIR = 'sudoku_text'
 GRID_DIR = 'grids'
@@ -61,14 +61,18 @@ def build_main_sudoku_grid():
     return grid
 
 def cover_column_by_indices(root, indices):
+    solutions = []
     for index in indices[::-1]:
         c = root.r
         while c is not root:
             #print ('name', c.name, index)
             if c.name == index:
+
                 cover_column(c)
+                solutions.append(c.d)
                 break
             c = c.r
+    return solutions
 
 def solve_sudoku(name):
     gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
@@ -81,15 +85,17 @@ def solve_sudoku(name):
             indices.extend(indices_to_fill(col_j, row_i, n))
             #print (col_j, row_i, n)
     indices.sort()
-    cover_column_by_indices(root, indices)
+    solutions = cover_column_by_indices(root, indices)
     uncovered = []
     c = root.r
     while c is not root:
         uncovered.append(c.name)
         c = c.r
-    print (indices)
+    print (indices[::-1])
     print (uncovered)
-    run_solver(name, root)
+    print ([node.name for node in solutions])
+    k = 0
+    search(name, root, k, solutions)
 
 def save_main_grid():
     grid = build_main_sudoku_grid()
