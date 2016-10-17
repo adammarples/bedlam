@@ -62,12 +62,12 @@ def build_main_sudoku_grid():
 
 def cover_column_by_indices(root, indices):
     for index in indices[::-1]:
-        count = 0
         c = root.r
         while c is not root:
-            count += 1
-            if count == index:
+            #print ('name', c.name, index)
+            if c.name == index:
                 cover_column(c)
+                break
             c = c.r
 
 def solve_sudoku(name):
@@ -81,9 +81,8 @@ def solve_sudoku(name):
             indices.extend(indices_to_fill(col_j, row_i, n))
             #print (col_j, row_i, n)
     indices.sort()
-    print (indices)
     cover_column_by_indices(root, indices)
-    #run_solver(name, root)
+    run_solver(name, root)
 
 def save_main_grid():
     grid = build_main_sudoku_grid()
