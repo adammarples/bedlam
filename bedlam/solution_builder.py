@@ -46,10 +46,10 @@ def save(name, n_shapes, box_size):
             print ('#', file=fi)
 
 def main():
-    save('hoffmann', 6, 3)
-    save('coffin', 6, 3)
-    save('nob', 6, 3)
-    save('soma', 7, 3)
+    #save('hoffmann', 6, 3)
+    #save('coffin', 6, 3)
+    #save('nob', 6, 3)
+    #save('soma', 7, 3)
     save('bedlam', 13, 4)
 
 if __name__ == '__main__':
