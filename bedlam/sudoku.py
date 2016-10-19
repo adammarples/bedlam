@@ -125,21 +125,12 @@ def save_main_grid():
     save(filepath, grid)
 
 def reverse_getter(i1, i2, i3):
-
     col_j = i1 // 9
     n = i1 % 9
     row_i = (i2 - 81) // 9
-    print ('i1', i1, 'col_j', col_j, 'n', n+1, 'i2', i2, 'row_i', row_i)
+    print (col_j, row_i, n+1)
     cell = (row_i * 9) + col_j
     return cell, n+1
-
-    x = col_j // 3
-    y = row_i // 3
-    squ_k = (y * 3) + x
-    col_mark = ((n * 9) + col_j)
-    row_mark = ((n * 9) + row_i) + 81
-    squ_mark = ((n * 9) + squ_k) + 81 + 81
-    return col_mark, row_mark, squ_mark
 
 
 def build_sudoku_solutions(name):
@@ -152,12 +143,22 @@ def build_sudoku_solutions(name):
         sumline = solution.sum(axis=0)
         status = 'full', sumline.all(), 'even', sumline.sum()==len(sumline)
         print (status)
-        for i in solution:
-            i1, i2, i3 = (i.nonzero()[0])
-            print (i1, i2, i3)
-            cell, n = reverse_getter(i1, i2, i3)
-            print (cell, n)
-        yield
+        #for i in solution:
+        #    i1, i2, i3 = (i.nonzero()[0])
+        #    print (i1, i2, i3)
+        #    cell, n = reverse_getter(i1, i2, i3)
+        #    #print (cell, n)
+        answers = []
+        for x in array:
+            cell = x // 9
+            n = x % 9
+            answers.append((cell, n+1))
+        answers.sort()
+        flat = np.array([a for a in zip(*answers)][1])
+        field = flat.reshape((9, 9))
+        print (flat)
+        print (field.shape)
+        yield field
 
 if __name__ == '__main__':
     save_main_grid()
@@ -165,4 +166,4 @@ if __name__ == '__main__':
     #solve_sudoku('sudoku_example')
     for x in build_sudoku_solutions('blank'):
         print (x)
-    build_sudoku_solutions('sudoku_example')
+    #build_sudoku_solutions('sudoku_example')
