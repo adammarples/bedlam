@@ -8,6 +8,7 @@ except:
     os.mkdir(SOLUTION_DIR)
 
 def search(name, root, k, solutions):
+    #print ('k', k)
     if root == root.r:
         solution_path = os.path.join(SOLUTION_DIR, '{}_solutions.txt'.format(name))
         with open(solution_path, 'a') as fi:
@@ -15,22 +16,28 @@ def search(name, root, k, solutions):
         print ('Solution found', [n.name[0] for n in solutions])
         return
     c = pick_column(root)
+    #print ('cover column', c.name)
     cover_column(c)
     node = c.d
     while node is not c:
+        #print ('add to solution', node.name)
         solutions.append(node)
         rnod = node.r
         while rnod is not node:
+            #print ('r cover column', rnod.name)
             cover_column(rnod.c)
             rnod = rnod.r
         search(name, root, k+1, solutions)
         node = solutions.pop()
+        #print ('pop', node.name)
         c = node.c
         lnod = node.l
         while lnod is not node:
+            #print ('l uncover column', lnod.name)
             uncover_column(lnod.c)
             lnod = lnod.l
         node = node.d
+    #print ('uncover column', c.name)
     uncover_column(c)
 
 def run_solver(name, root):
