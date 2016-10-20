@@ -33,9 +33,9 @@ def col_index_getter(col_j, row_i, n):
     x = col_j // 3
     y = row_i // 3
     squ_k = (y * 3) + x
-    col_mark = ((n * 9) + col_j)
-    row_mark = ((n * 9) + row_i) + 81
-    squ_mark = ((n * 9) + squ_k) + 81 + 81
+    col_mark = ((col_j * 9) + n)
+    row_mark = ((row_i * 9) + n) + 81
+    squ_mark = ((squ_k * 9) + n) + 81 + 81
     return col_mark, row_mark, squ_mark
 
 def row_index_getter(col_j, row_i, n):
@@ -139,7 +139,8 @@ def build_sudoku_solutions(name):
     for array in generate_arrays(name):
         #print (array, array.shape)
         solution = np.take(grid, array, axis=0)
-        #print (solution, solution.shape)
+        print (solution)
+        print (solution.shape)
         sumline = solution.sum(axis=0)
         status = 'full', sumline.all(), 'even', sumline.sum()==len(sumline)
         print (status)
@@ -152,18 +153,18 @@ def build_sudoku_solutions(name):
         for x in array:
             cell = x // 9
             n = x % 9
+            # print (x, cell, n)
             answers.append((cell, n+1))
         answers.sort()
         flat = np.array([a for a in zip(*answers)][1])
         field = flat.reshape((9, 9))
-        print (flat)
-        print (field.shape)
+        print ('field')
+        print (field)
         yield field
 
 if __name__ == '__main__':
-    save_main_grid()
-    #solve_sudoku('blank')
-    #solve_sudoku('sudoku_example')
-    for x in build_sudoku_solutions('blank'):
-        print (x)
-    #build_sudoku_solutions('sudoku_example')
+    # save_main_grid()
+    # solve_sudoku('blank')
+    # solve_sudoku('sudoku_example')
+    [x for x in build_sudoku_solutions('blank')]
+    # build_sudoku_solutions('sudoku_example')
