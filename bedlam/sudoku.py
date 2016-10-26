@@ -144,10 +144,10 @@ def build_sudoku_solutions(name, N):
     gridpath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
     grid = load(gridpath)
     for array in generate_arrays(name):
-        print (array, array.shape)
+        #print (array, array.shape)
         solution = np.take(grid, array, axis=0)
-        print (solution)
-        print (solution.shape)
+        #print (solution)
+        #print (solution.shape)
         sumline = solution.sum(axis=0)
         status = 'full', sumline.all(), 'even', sumline.sum()==len(sumline)
         print (status, sumline.shape)
@@ -155,9 +155,9 @@ def build_sudoku_solutions(name, N):
         for row_i in array:
             cell, n = get_cell_n_from_row_i(N, row_i)
             answers.append((cell, n))
-        print (answers)
+        #print (answers)
         answers.sort()
-        print (answers)
+        #print (answers)
         flat = np.array([a for a in zip(*answers)][1])
         field = flat.reshape((N**2, N**2))
         print ('field')
@@ -165,11 +165,11 @@ def build_sudoku_solutions(name, N):
         yield field
 
 if __name__ == '__main__':
-    save_sudoku_grid(2)
-    save_sudoku_grid(3)
+    #save_sudoku_grid(2)
+    #save_sudoku_grid(3)
     #solve_sudoku('blank2', 2)
     #solve_sudoku('blank', 3)
     #solve_sudoku('sudoku_example', 3)
-    #[x for x in build_sudoku_solutions('blank2', 2)]
+    [x for x in build_sudoku_solutions('blank2', 2)]
     #[x for x in build_sudoku_solutions('blank', 3)]
     #[x for x in build_sudoku_solutions('sudoku_example', 3)]
