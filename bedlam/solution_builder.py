@@ -5,7 +5,7 @@ from __init__ import load
 np.set_printoptions(linewidth=150)
 
 GRID_DIR = 'grids'
-SAVED_SOLUTION_DIR = 'saved_solutions'
+SAVED_SOLUTION_DIR = 'solutions'
 BOXES_DIR = 'boxes'
 try:
     os.stat(BOXES_DIR)
