@@ -97,6 +97,7 @@ def cover_column_by_nodes(root, nodes):
 
                 node = node.d
             c = c.r
+    #print ('Fixed solutions', [no.name for no in solutions])
     return solutions
 
 def solve_sudoku(name):
@@ -111,15 +112,16 @@ def solve_sudoku(name):
     solutions = []
     array = load_sudoku(name)
     nodes = []
+    #print (array)
     for (row_i, col_j), n in np.ndenumerate(array):
         if n:
-            row_index = row_index_getter(col_j, row_i, n)
-            col_indices = col_index_getter(col_j, row_i, n)
+            row_index = row_index_getter(col_j, row_i, n-1)
+            col_indices = col_index_getter(col_j, row_i, n-1)
             node_name = (col_indices[-1], row_index)
             nodes.append(node_name)
     nodes.sort()
     nodes.reverse()
-    print ('Removing fixed numbers')
+    #print ('Removing fixed numbers')
     solutions = cover_column_by_nodes(root, nodes)
     uncovered = []
     c = root.r
@@ -177,4 +179,5 @@ if __name__ == '__main__':
     #solve_sudoku('x')
     #[x for x in build_sudoku_solutions('blank')]
     #[x for x in build_sudoku_solutions('sudoku_example')]
+    #solve_and_build('blank')
     solve_and_build('sudoku_example')
