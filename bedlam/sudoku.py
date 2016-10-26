@@ -20,12 +20,13 @@ def load_sudoku(name):
     """
     filepath = os.path.join(SUDOKU_TEXT_DIR, '{}.txt'.format(name))
     with open(filepath, 'r') as fi:
-        lines = fi.read().strip()
-        text = [x for x in lines]
-        while '\n' in text:
-            text.remove('\n')
-        text = [int(t) for t in text]
-        array = np.array(text).reshape((N**2,N**2))
+        arr = []
+        lines = fi.readlines()
+        for line in lines:
+            split = line.strip().split(' ')
+            ints = [0 if x=='.' else int(x) for x in split]
+            arr.append(ints)
+        array = np.array(arr).reshape((N**2,N**2))
         return array
 
 def col_index_getter(col_j, row_i, n):
@@ -157,6 +158,7 @@ def build_sudoku_solutions(name):
 
 if __name__ == '__main__':
     pass
+    load_sudoku('x')
     #save_sudoku_grid()
     #solve_sudoku('blank')
     #solve_sudoku('sudoku_example')
