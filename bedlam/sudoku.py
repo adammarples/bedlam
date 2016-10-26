@@ -24,7 +24,6 @@ def load_sudoku(name):
         fi.seek(0)
         arr = []
         lines = fi.readlines()
-        print (6, fi.read())
         for line in lines:
             split = line.strip().split(' ')
 
@@ -88,15 +87,14 @@ def cover_column_by_nodes(root, nodes):
             node = c.d
             while node is not c:
                 if node.name == node_xy:
-                    #print ('SOLUTION', node.c.name)
                     solutions.append(node)
                     cover_column(node.c)
-                    #
+
                     rnod = node.r
                     while rnod is not node:
                         cover_column(rnod.c)
                         rnod = rnod.r
-                    #
+
                 node = node.d
             c = c.r
     return solutions
@@ -160,9 +158,10 @@ def build_sudoku_solutions(name):
             flat = np.array([a for a in zip(*answers)][1])
             field = flat.reshape((N**2, N**2))
             for line in field:
+                print (''.join([str(x) + ' ' for x in line]))
                 print (''.join([str(x) + ' ' for x in line]), file=fi)
-            print ('field')
-            print (field)
+            #print ('field')
+            #print (field)
             #print (field, file=fi)
             yield field
 
