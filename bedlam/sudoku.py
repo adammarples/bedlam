@@ -179,5 +179,5 @@ if __name__ == '__main__':
     #solve_sudoku('x')
     #[x for x in build_sudoku_solutions('blank')]
     #[x for x in build_sudoku_solutions('sudoku_example')]
-    #solve_and_build('blank')
+    solve_and_build('blank')
     solve_and_build('sudoku_example')
