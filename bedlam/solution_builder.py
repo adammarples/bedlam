@@ -17,9 +17,13 @@ def generate_arrays(name):
     filename = os.path.join(SAVED_SOLUTION_DIR, '{}_solutions.txt'.format(name))
     with open(filename, 'r') as fi:
         for line in fi.readlines():
+            #print (5, line, 5)
             stripline = line.strip()
+            #print (6, stripline, 6)
             toptailed = stripline[1:-1]
+            #print (7, toptailed, 7)
             numbers = toptailed.split(', ')
+            #print (8, numbers, 8)
             array = np.array([int(x) for x in numbers])
             yield array
 
