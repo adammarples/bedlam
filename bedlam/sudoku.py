@@ -10,11 +10,12 @@ GRID_DIR = 'grids'
 SAVED_SOLUTION_DIR = 'saved_solutions'
 SUDOKUS_DIR = 'sudoku_boxes'
 SUDOKU_TEXT_DIR = 'sudoku_text'
+N = 3
 
 def load(filepath):
     return np.loadtxt(filepath, delimiter=",")
 
-def load_sudoku(name, N):
+def load_sudoku(name):
     """ return an array from a text file.
     """
     filepath = os.path.join(SUDOKU_TEXT_DIR, '{}.txt'.format(name))
@@ -27,7 +28,7 @@ def load_sudoku(name, N):
         array = np.array(text).reshape((N**2,N**2))
         return array
 
-def col_index_getter(N, col_j, row_i, n):
+def col_index_getter(col_j, row_i, n):
     """ generate col indices that need to be filled with 1's.
     """
     x = col_j // N
@@ -39,11 +40,11 @@ def col_index_getter(N, col_j, row_i, n):
     cel_mark = ((row_i * (N**2)) + col_j) + (3 * (N**4))
     return col_mark, row_mark, squ_mark, cel_mark
 
-def row_index_getter(N, col_j, row_i, n):
+def row_index_getter(col_j, row_i, n):
     cell = (row_i * (N**2)) + col_j
     return (cell * (N**2)) + n
 
-def build_main_sudoku_grid(N):
+def build_main_sudoku_grid():
     """
     columns are: (n**4) + (n**4) + (n**4)
         1incol1, 2incol1, ..., 9incol9,
@@ -62,7 +63,7 @@ def build_main_sudoku_grid(N):
             # col_j row_i are cols/rows in the sudoku board, 0-8 each
             col_j = cell % (N**2)
             row_i = cell // (N**2)
-            i1, i2, i3, i4 = col_index_getter(N, col_j, row_i, n)
+            i1, i2, i3, i4 = col_index_getter(col_j, row_i, n)
             #print ('cell', cell, 'n', n, 'col', col_j, 'row', row_i, 'indices', i1, i2, i3)
             grid[i][i1] = 1
             grid[i][i2] = 1
@@ -95,20 +96,19 @@ def cover_column_by_nodes(root, nodes):
             c = c.r
     return solutions
 
-def solve_sudoku(name, N):
-    gridpath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
+def solve_sudoku(name):
+    gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
     grid = load(gridpath)
     root = link_a_grid(grid)
     solutions = []
-    array = load_sudoku(name, N)
+    array = load_sudoku(name)
     nodes = []
     for (row_i, col_j), n in np.ndenumerate(array):
         if n:
-            row_index = row_index_getter(N, col_j, row_i, n)
-            col_indices = col_index_getter(N, col_j, row_i, n)
+            row_index = row_index_getter(col_j, row_i, n)
+            col_indices = col_index_getter(col_j, row_i, n)
             node_name = (col_indices[-1], row_index)
             nodes.append(node_name)
-            #print (col_j, row_i, n)
     nodes.sort()
     nodes.reverse()
     print ('Removing fixed numbers')
@@ -122,54 +122,42 @@ def solve_sudoku(name, N):
     answer = search(name, root, k, solutions)
     print (answer)
 
-def save_sudoku_grid(N):
-    grid = build_main_sudoku_grid(N)
-    filepath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
+def save_sudoku_grid():
+    grid = build_main_sudoku_grid()
+    filepath = os.path.join(GRID_DIR, 'sudoku.csv')
     save(filepath, grid)
 
-# def reverse_getter(i1, i2, i3):
-#     col_j = i1 // 9
-#     n = i1 % 9
-#     row_i = (i2 - 81) // 9
-#     print (col_j, row_i, n+1)
-#     cell = (row_i * 9) + col_j
-#     return cell, n+1
-
-def get_cell_n_from_row_i(N, row_i):
+def get_cell_n_from_row_i(row_i):
     cell = row_i // (N**2)
     n = row_i % (N**2)
     return cell, n+1
 
-def build_sudoku_solutions(name, N):
-    gridpath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
+def build_sudoku_solutions(name):
+    gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
     grid = load(gridpath)
-    for array in generate_arrays(name):
-        #print (array, array.shape)
-        solution = np.take(grid, array, axis=0)
-        #print (solution)
-        #print (solution.shape)
-        sumline = solution.sum(axis=0)
-        status = 'full', sumline.all(), 'even', sumline.sum()==len(sumline)
-        print (status, sumline.shape)
-        answers = []
-        for row_i in array:
-            cell, n = get_cell_n_from_row_i(N, row_i)
-            answers.append((cell, n))
-        #print (answers)
-        answers.sort()
-        #print (answers)
-        flat = np.array([a for a in zip(*answers)][1])
-        field = flat.reshape((N**2, N**2))
-        print ('field')
-        print (field)
-        yield field
+    solpath = os.path.join(SUDOKUS_DIR, '{}_box.txt'.format(name))
+    with open(solpath, 'w') as fi:
+        for array in generate_arrays(name):
+            solution = np.take(grid, array, axis=0)
+            sumline = solution.sum(axis=0)
+            status = 'full', sumline.all(), 'even', sumline.sum()==len(sumline)
+            print (status, sumline.shape)
+            print (status, sumline.shape, file=fi)
+            answers = []
+            for row_i in array:
+                cell, n = get_cell_n_from_row_i(row_i)
+                answers.append((cell, n))
+            answers.sort()
+            flat = np.array([a for a in zip(*answers)][1])
+            field = flat.reshape((N**2, N**2))
+            print ('field')
+            print (field)
+            print (field, file=fi)
+            yield field
 
 if __name__ == '__main__':
-    #save_sudoku_grid(2)
-    #save_sudoku_grid(3)
-    #solve_sudoku('blank2', 2)
-    #solve_sudoku('blank', 3)
-    #solve_sudoku('sudoku_example', 3)
-    [x for x in build_sudoku_solutions('blank2', 2)]
-    #[x for x in build_sudoku_solutions('blank', 3)]
-    #[x for x in build_sudoku_solutions('sudoku_example', 3)]
+    #save_sudoku_grid()
+    #solve_sudoku('blank')
+    solve_sudoku('sudoku_example')
+    #[x for x in build_sudoku_solutions('blank')]
+    [x for x in build_sudoku_solutions('sudoku_example')]
