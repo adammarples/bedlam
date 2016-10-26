@@ -9,7 +9,7 @@ GRID_DIR = 'grids'
 SAVED_SOLUTION_DIR = 'saved_solutions'
 SUDOKUS_DIR = 'sudoku_boxes'
 SUDOKU_TEXT_DIR = 'sudoku_text'
-N = 3
+#N = 3
 
 def load(filepath):
     return np.loadtxt(filepath, delimiter=",")
@@ -27,20 +27,20 @@ def load_sudoku(name):
         array = np.array(text).reshape((9,9))
         return array
 
-def col_index_getter(col_j, row_i, n):
+def col_index_getter(N, col_j, row_i, n):
     """ generate col indices that need to be filled with 1's.
     """
-    x = col_j // 3
-    y = row_i // 3
-    squ_k = (y * 3) + x
-    col_mark = ((col_j * 9) + n)
-    row_mark = ((row_i * 9) + n) + 81
-    squ_mark = ((squ_k * 9) + n) + 81 + 81
+    x = col_j // N
+    y = row_i // N
+    squ_k = (y * N) + x
+    col_mark = ((col_j * (N**2)) + n)
+    row_mark = ((row_i * (N**2)) + n) + (N**4)
+    squ_mark = ((squ_k * (N**2)) + n) + (N**4) + (N**4)
     return col_mark, row_mark, squ_mark
 
-def row_index_getter(col_j, row_i, n):
-    cell = (row_i * 9) + col_j
-    return (cell * 9) + n
+def row_index_getter(N, col_j, row_i, n):
+    cell = (row_i * (N**2)) + col_j
+    return (cell * (N**2)) + n
 
 def build_main_sudoku_grid(N):
     """
@@ -60,7 +60,7 @@ def build_main_sudoku_grid(N):
             # col_j row_i are cols/rows in the sudoku board, 0-8 each
             col_j = cell % (N**2)
             row_i = cell // (N**2)
-            i1, i2, i3 = col_index_getter(col_j, row_i, n)
+            i1, i2, i3 = col_index_getter(N, col_j, row_i, n)
             #print ('cell', cell, 'n', n, 'col', col_j, 'row', row_i, 'indices', i1, i2, i3)
             grid[i][i1] = 1
             grid[i][i2] = 1
@@ -92,7 +92,7 @@ def cover_column_by_nodes(root, nodes):
             c = c.r
     return solutions
 
-def solve_sudoku(name):
+def solve_sudoku(name, N):
     gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
     grid = load(gridpath)
     root = link_a_grid(grid)
@@ -101,8 +101,8 @@ def solve_sudoku(name):
     nodes = []
     for (row_i, col_j), n in np.ndenumerate(array):
         if n:
-            row_index = row_index_getter(col_j, row_i, n)
-            col_indices = col_index_getter(col_j, row_i, n)
+            row_index = row_index_getter(N, col_j, row_i, n)
+            col_indices = col_index_getter(N, col_j, row_i, n)
             node_name = (col_indices[-1], row_index)
             nodes.append(node_name)
             #print (col_j, row_i, n)
@@ -122,6 +122,11 @@ def solve_sudoku(name):
 def save_main_grid():
     grid = build_main_sudoku_grid(3)
     filepath = os.path.join(GRID_DIR, 'sudoku.csv')
+    save(filepath, grid)
+
+def save_2_grid():
+    grid = build_main_sudoku_grid(2)
+    filepath = os.path.join(GRID_DIR, 'sudoku_2.csv')
     save(filepath, grid)
 
 def reverse_getter(i1, i2, i3):
@@ -163,8 +168,9 @@ def build_sudoku_solutions(name):
         yield field
 
 if __name__ == '__main__':
-    save_main_grid()
-    # solve_sudoku('blank')
-    # solve_sudoku('sudoku_example')
+    #save_main_grid()
+    save_2_grid()
+    # solve_sudoku('blank', 3)
+    # solve_sudoku('sudoku_example', 3)
     #[x for x in build_sudoku_solutions('blank')]
     # build_sudoku_solutions('sudoku_example')
