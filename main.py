@@ -3,6 +3,7 @@ import cProfile
 import numpy as np
 from bedlam.linked_lists import link_a_grid
 from bedlam.algx import run_solver
+from bedlam.solution_builder import save 
 
 GRID_DIR = 'grids'
 
