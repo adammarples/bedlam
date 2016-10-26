@@ -7,7 +7,7 @@ from solution_builder import generate_arrays
 
 np.set_printoptions(linewidth=250)
 GRID_DIR = 'grids'
-SAVED_SOLUTION_DIR = 'saved_solutions'
+SOLUTION_DIR = 'solutions'
 SUDOKUS_DIR = 'sudoku_boxes'
 SUDOKU_TEXT_DIR = 'sudoku_text'
 N = 3
@@ -20,10 +20,14 @@ def load_sudoku(name):
     """
     filepath = os.path.join(SUDOKU_TEXT_DIR, '{}.txt'.format(name))
     with open(filepath, 'r') as fi:
+        print (fi.read())
+        fi.seek(0)
         arr = []
         lines = fi.readlines()
+        print (6, fi.read())
         for line in lines:
             split = line.strip().split(' ')
+
             ints = [0 if x=='.' else int(x) for x in split]
             arr.append(ints)
         array = np.array(arr).reshape((N**2,N**2))
@@ -98,6 +102,11 @@ def cover_column_by_nodes(root, nodes):
     return solutions
 
 def solve_sudoku(name):
+    savepath = os.path.join(SOLUTION_DIR, '{}_solutions.txt'.format(name))
+    if os.path.isfile(savepath):
+        print ('Deleting', savepath)
+        os.remove(savepath)
+
     gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
     grid = load(gridpath)
     root = link_a_grid(grid)
@@ -120,8 +129,7 @@ def solve_sudoku(name):
         uncovered.append(c.name)
         c = c.r
     k = 0
-    answer = search(name, root, k, solutions)
-    print (answer)
+    search(name, root, k, solutions)
 
 def save_sudoku_grid():
     grid = build_main_sudoku_grid()
@@ -158,11 +166,16 @@ def build_sudoku_solutions(name):
             #print (field, file=fi)
             yield field
 
+def solve_and_build(name):
+    solve_sudoku(name)
+    [x for x in build_sudoku_solutions(name)]
+
 if __name__ == '__main__':
     pass
-    #load_sudoku('x')
     #save_sudoku_grid()
     #solve_sudoku('blank')
     #solve_sudoku('sudoku_example')
+    #solve_sudoku('x')
     #[x for x in build_sudoku_solutions('blank')]
-    [x for x in build_sudoku_solutions('sudoku_example')]
+    #[x for x in build_sudoku_solutions('sudoku_example')]
+    solve_and_build('sudoku_example')
