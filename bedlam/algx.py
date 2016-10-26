@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 SOLUTION_DIR = 'solutions'
 try:
@@ -13,7 +14,7 @@ def search(name, root, k, solutions):
         solution_path = os.path.join(SOLUTION_DIR, '{}_solutions.txt'.format(name))
         with open(solution_path, 'a') as fi:
             print ([n.name[0] for n in solutions], file=fi)
-        print ('Solution found', [n.name[0] for n in solutions])
+        print ('Solution found', np.array([n.name[0] for n in solutions]))
         return
     c = pick_column(root)
     #print ('cover column', c.name)
