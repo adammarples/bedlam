@@ -14,7 +14,7 @@ SUDOKU_TEXT_DIR = 'sudoku_text'
 def load(filepath):
     return np.loadtxt(filepath, delimiter=",")
 
-def load_sudoku(name):
+def load_sudoku(name, N):
     """ return an array from a text file.
     """
     filepath = os.path.join(SUDOKU_TEXT_DIR, '{}.txt'.format(name))
@@ -24,7 +24,7 @@ def load_sudoku(name):
         while '\n' in text:
             text.remove('\n')
         text = [int(t) for t in text]
-        array = np.array(text).reshape((9,9))
+        array = np.array(text).reshape((N**2,N**2))
         return array
 
 def col_index_getter(N, col_j, row_i, n):
@@ -93,11 +93,11 @@ def cover_column_by_nodes(root, nodes):
     return solutions
 
 def solve_sudoku(name, N):
-    gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
+    gridpath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
     grid = load(gridpath)
     root = link_a_grid(grid)
     solutions = []
-    array = load_sudoku(name)
+    array = load_sudoku(name, N)
     nodes = []
     for (row_i, col_j), n in np.ndenumerate(array):
         if n:
@@ -121,7 +121,7 @@ def solve_sudoku(name, N):
 
 def save_main_grid():
     grid = build_main_sudoku_grid(3)
-    filepath = os.path.join(GRID_DIR, 'sudoku.csv')
+    filepath = os.path.join(GRID_DIR, 'sudoku_3.csv')
     save(filepath, grid)
 
 def save_2_grid():
@@ -138,8 +138,8 @@ def reverse_getter(i1, i2, i3):
     return cell, n+1
 
 
-def build_sudoku_solutions(name):
-    gridpath = os.path.join(GRID_DIR, 'sudoku.csv')
+def build_sudoku_solutions(name, N):
+    gridpath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
     grid = load(gridpath)
     for array in generate_arrays(name):
         #print (array, array.shape)
@@ -156,21 +156,23 @@ def build_sudoku_solutions(name):
         #    #print (cell, n)
         answers = []
         for x in array:
-            cell = x // 9
-            n = x % 9
+            cell = x // (N**2)
+            n = x % (N**2)
             # print (x, cell, n)
             answers.append((cell, n+1))
         answers.sort()
         flat = np.array([a for a in zip(*answers)][1])
-        field = flat.reshape((9, 9))
+        field = flat.reshape((N**2, N**2))
         print ('field')
         print (field)
         yield field
 
 if __name__ == '__main__':
-    #save_main_grid()
+    save_main_grid()
     save_2_grid()
     # solve_sudoku('blank', 3)
     # solve_sudoku('sudoku_example', 3)
-    #[x for x in build_sudoku_solutions('blank')]
+    #solve_sudoku('blank2', 2)
+    #[x for x in build_sudoku_solutions('blank', 3)]
+    #[x for x in build_sudoku_solutions('blank2', 2)]
     # build_sudoku_solutions('sudoku_example')
