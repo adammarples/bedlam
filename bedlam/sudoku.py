@@ -42,7 +42,7 @@ def row_index_getter(col_j, row_i, n):
     cell = (row_i * 9) + col_j
     return (cell * 9) + n
 
-def build_main_sudoku_grid():
+def build_main_sudoku_grid(N):
     """
     columns are: (n**4) + (n**4) + (n**4)
         1incol1, 2incol1, ..., 9incol9,
@@ -52,21 +52,21 @@ def build_main_sudoku_grid():
         1incel1, 2incel1, ..., 9incel9.
 
     """
-    grid = np.zeros((9*81, 3*81))
+    grid = np.zeros((N**6, 3*(N**4)))
     i = 0
     # these two loops make 81*9 rows
-    for cell in range(81):
-        for n in range(9):
+    for cell in range(N**4):
+        for n in range(N**2):
             # col_j row_i are cols/rows in the sudoku board, 0-8 each
-            col_j = cell % 9
-            row_i = cell // 9
+            col_j = cell % (N**2)
+            row_i = cell // (N**2)
             i1, i2, i3 = col_index_getter(col_j, row_i, n)
             #print ('cell', cell, 'n', n, 'col', col_j, 'row', row_i, 'indices', i1, i2, i3)
             grid[i][i1] = 1
             grid[i][i2] = 1
             grid[i][i3] = 1
             i += 1
-    print ('check', grid.sum()/3/81/9)
+    print ('check', grid.sum()/3/N**6)
     return grid
 
 def cover_column_by_nodes(root, nodes):
@@ -120,7 +120,7 @@ def solve_sudoku(name):
     print (answer)
 
 def save_main_grid():
-    grid = build_main_sudoku_grid()
+    grid = build_main_sudoku_grid(3)
     filepath = os.path.join(GRID_DIR, 'sudoku.csv')
     save(filepath, grid)
 
@@ -143,7 +143,7 @@ def build_sudoku_solutions(name):
         print (solution.shape)
         sumline = solution.sum(axis=0)
         status = 'full', sumline.all(), 'even', sumline.sum()==len(sumline)
-        print (status)
+        print (status, sumline.shape)
         #for i in solution:
         #    i1, i2, i3 = (i.nonzero()[0])
         #    print (i1, i2, i3)
@@ -163,8 +163,8 @@ def build_sudoku_solutions(name):
         yield field
 
 if __name__ == '__main__':
-    # save_main_grid()
+    save_main_grid()
     # solve_sudoku('blank')
     # solve_sudoku('sudoku_example')
-    [x for x in build_sudoku_solutions('blank')]
+    #[x for x in build_sudoku_solutions('blank')]
     # build_sudoku_solutions('sudoku_example')
