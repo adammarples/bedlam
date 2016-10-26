@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import sys
 
 SOLUTION_DIR = 'solutions'
 try:
@@ -10,13 +9,11 @@ except:
     os.mkdir(SOLUTION_DIR)
 
 def search(name, root, k, solutions):
-    #print ('k', k)
     if root == root.r:
         solution_path = os.path.join(SOLUTION_DIR, '{}_solutions.txt'.format(name))
         with open(solution_path, 'a') as fi:
             print ([n.name[0] for n in solutions], file=fi)
-        print ('\rSolution found', end='')#, np.array([n.name[0] for n in solutions]))
-        #sys.stdout.flush()
+        print ('Solution found', np.array([n.name[0] for n in solutions]))
         return
     c = pick_column(root)
     #print ('cover column', c.name)
