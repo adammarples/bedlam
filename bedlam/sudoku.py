@@ -119,14 +119,9 @@ def solve_sudoku(name, N):
     answer = search(name, root, k, solutions)
     print (answer)
 
-def save_main_grid():
-    grid = build_main_sudoku_grid(3)
-    filepath = os.path.join(GRID_DIR, 'sudoku_3.csv')
-    save(filepath, grid)
-
-def save_2_grid():
-    grid = build_main_sudoku_grid(2)
-    filepath = os.path.join(GRID_DIR, 'sudoku_2.csv')
+def save_sudoku_grid(N):
+    grid = build_main_sudoku_grid(N)
+    filepath = os.path.join(GRID_DIR, 'sudoku_{}.csv'.format(N))
     save(filepath, grid)
 
 def reverse_getter(i1, i2, i3):
@@ -168,8 +163,8 @@ def build_sudoku_solutions(name, N):
         yield field
 
 if __name__ == '__main__':
-    save_main_grid()
-    save_2_grid()
+    save_sudoku_grid(3)
+    save_sudoku_grid(2)
     # solve_sudoku('blank', 3)
     # solve_sudoku('sudoku_example', 3)
     #solve_sudoku('blank2', 2)
