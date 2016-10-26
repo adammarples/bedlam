@@ -151,16 +151,18 @@ def build_sudoku_solutions(name):
             answers.sort()
             flat = np.array([a for a in zip(*answers)][1])
             field = flat.reshape((N**2, N**2))
+            for line in field:
+                print (''.join([str(x) + ' ' for x in line]), file=fi)
             print ('field')
             print (field)
-            print (field, file=fi)
+            #print (field, file=fi)
             yield field
 
 if __name__ == '__main__':
     pass
-    load_sudoku('x')
+    #load_sudoku('x')
     #save_sudoku_grid()
     #solve_sudoku('blank')
     #solve_sudoku('sudoku_example')
     #[x for x in build_sudoku_solutions('blank')]
-    #[x for x in build_sudoku_solutions('sudoku_example')]
+    [x for x in build_sudoku_solutions('sudoku_example')]
