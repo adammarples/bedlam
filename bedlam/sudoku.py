@@ -156,8 +156,9 @@ def build_sudoku_solutions(name):
             yield field
 
 if __name__ == '__main__':
+    pass
     #save_sudoku_grid()
     #solve_sudoku('blank')
-    solve_sudoku('sudoku_example')
+    #solve_sudoku('sudoku_example')
     #[x for x in build_sudoku_solutions('blank')]
-    [x for x in build_sudoku_solutions('sudoku_example')]
+    #[x for x in build_sudoku_solutions('sudoku_example')]
