@@ -169,6 +169,9 @@ def build_sudoku_solutions(name):
 
 def solve_and_build(name):
     solve_sudoku(name)
+    build_sudoku(name)
+
+def build_sudoku(name):
     [x for x in build_sudoku_solutions(name)]
 
 if __name__ == '__main__':
@@ -179,5 +182,9 @@ if __name__ == '__main__':
     #solve_sudoku('x')
     #[x for x in build_sudoku_solutions('blank')]
     #[x for x in build_sudoku_solutions('sudoku_example')]
-    solve_and_build('blank')
-    solve_and_build('sudoku_example')
+    #solve_sudoku('blank')
+    #build_sudoku('blank')
+    #solve_and_build('blank')
+    #solve_and_build('sudoku_example')
+    #solve_and_build('x')
+    solve_and_build('japanese')
