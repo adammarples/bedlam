@@ -1,11 +1,12 @@
 import os
 import cProfile
 import numpy as np
+
+from bedlam import GRID_DIR
 from bedlam.linked_lists import link_a_grid
 from bedlam.algx import run_solver
-from bedlam.solution_builder import save 
+from bedlam.solution_builder import save
 
-GRID_DIR = 'grids'
 
 def load(filepath):
     return np.loadtxt(filepath, delimiter=",")

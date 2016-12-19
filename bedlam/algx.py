@@ -1,7 +1,7 @@
 import os
 import numpy as np
+from bedlam import SOLUTION_DIR
 
-SOLUTION_DIR = 'solutions'
 try:
     os.stat(SOLUTION_DIR)
 except:

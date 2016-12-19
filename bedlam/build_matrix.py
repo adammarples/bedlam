@@ -1,7 +1,8 @@
-import shape_reader
-import coordinate_handler as co
 import string
 import numpy as np
+
+from . import shape_reader
+from . import coordinate_handler as co
 
 np.set_printoptions(linewidth=150)
 

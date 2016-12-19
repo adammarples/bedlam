@@ -1,13 +1,13 @@
-import build_matrix as bx
-import os
 
-GRID_DIR = 'grids'
+import os
+from bedlam import GRID_DIR, TEXT_DIR
+from . import  build_matrix as bx
+
 try:
     os.stat(GRID_DIR)
 except:
     print ('Creating', GRID_DIR)
     os.mkdir(GRID_DIR)
-TEXT_DIR = 'text'
 
 def build(name, n_shapes, box_size):
     txt = '{}.txt'.format(name)

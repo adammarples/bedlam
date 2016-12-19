@@ -1,15 +1,14 @@
 import numpy as np
 import os
-from build_matrix import save
-from linked_lists import link_a_grid
-from algx import run_solver, cover_column, search
-from solution_builder import generate_arrays
+
+from .build_matrix import save
+from .linked_lists import link_a_grid
+from .algx import run_solver, cover_column, search
+from .solution_builder import generate_arrays
+
+from bedlam import GRID_DIR, SOLUTION_DIR, SUDOKUS_DIR, SUDOKU_TEXT_DIR
 
 np.set_printoptions(linewidth=250)
-GRID_DIR = 'grids'
-SOLUTION_DIR = 'solutions'
-SUDOKUS_DIR = 'sudoku_boxes'
-SUDOKU_TEXT_DIR = 'sudoku_text'
 N = 3
 
 def load(filepath):

@@ -1,12 +1,9 @@
 import os
 import numpy as np
-from __init__ import load
+from bedlam import load, GRID_DIR, SOLUTION_DIR, BOXES_DIR
 
 np.set_printoptions(linewidth=150)
 
-GRID_DIR = 'grids'
-SAVED_SOLUTION_DIR = 'solutions'
-BOXES_DIR = 'boxes'
 try:
     os.stat(BOXES_DIR)
 except:
