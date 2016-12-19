@@ -11,7 +11,7 @@ except:
     os.mkdir(BOXES_DIR)
 
 def generate_arrays(name):
-    filename = os.path.join(SAVED_SOLUTION_DIR, '{}_solutions.txt'.format(name))
+    filename = os.path.join(SOLUTION_DIR, '{}_solutions.txt'.format(name))
     with open(filename, 'r') as fi:
         for line in fi.readlines():
             stripline = line.strip()
