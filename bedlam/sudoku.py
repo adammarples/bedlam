@@ -6,13 +6,10 @@ from .linked_lists import link_a_grid
 from .algx import run_solver, cover_column, search
 from .solution_builder import generate_arrays
 
-from bedlam import GRID_DIR, SOLUTION_DIR, SUDOKUS_DIR, SUDOKU_TEXT_DIR
+from bedlam import GRID_DIR, SOLUTION_DIR, SUDOKUS_DIR, SUDOKU_TEXT_DIR, load
 
 np.set_printoptions(linewidth=250)
 N = 3
-
-def load(filepath):
-    return np.loadtxt(filepath, delimiter=",")
 
 def load_sudoku(name):
     """ return an array from a text file.
