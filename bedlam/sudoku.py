@@ -187,4 +187,5 @@ if __name__ == '__main__':
     #solve_and_build('blank')
     #solve_and_build('sudoku_example')
     #solve_and_build('x')
-    solve_and_build('japanese')
+    #solve_and_build('japanese')
+    solve_and_build('worstcase')
