@@ -11,7 +11,30 @@ from bedlam import sudoku, SUDOKUS_DIR, SUDOKU_TEXT_DIR
 
 def main(new, arc):
     """Runs the sudoku solver on either an existing board or
-    a new one provided as a text file."""
+a new one provided as a text file.
+
+If solving an existing board try running on japanese, x or worstcase
+
+If adding a new board provide a txt file formatted like the following.
+
+. 2 . 4 . 3 7 . .
+. . . . . . . 3 2
+. . . . . . . . 4
+. 4 . 2 . . . 7 .
+8 . . . 5 . . . .
+. . . . . 1 . . .
+5 . . . . . 9 . .
+. 3 . 9 . . . . 7
+. . 1 . . 8 6 . .
+
+Example usage:
+    python sudoku.py -a japanese
+    python sudoku.py -n D:\\test.txt
+
+Your test.txt will be saved and you will then be able to run
+    "python sudoku.py -a test" in future.
+
+"""
 
     if new:
         #yield 'new={}'.format(new)
@@ -27,7 +50,7 @@ def main(new, arc):
 def saved_checker(name):
     """checks if the solution is a valid saved solution."""
     path = os.path.join(SUDOKUS_DIR, '{}_box.txt'.format(name))
-    return format_checker(path)
+    return os.path.isfile(path)
 
 def save_as_sudoku(src):
     path, filename = os.path.split(src)
